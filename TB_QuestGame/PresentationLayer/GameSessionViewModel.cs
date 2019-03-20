@@ -8,27 +8,27 @@ using System.Collections.ObjectModel;
 
 namespace TB_QuestGame.PresentationLayer
 {
-    public class GameSessionViewModel: ObservableObject
+    public class GameSessionViewModel : ObservableObject
     {
         #region FIELDS
-private DateTime _gameStartTime;
-        private Player _player;
-       private Map _gameMap;
-         private Location _currentLocation;
-         private Location _northLocation, _eastLocation, _southLocation, _westLocation;
 
-        
-      
+        private DateTime _gameStartTime;
+        private Player _player;
+        private Map _gameMap;
+        private Location _currentLocation;
+        private Location _northLocation, _eastLocation, _southLocation, _westLocation;
+
         #endregion
 
         #region PROPERTIES 
-   public Player Player
+
+        public Player Player
         {
             get { return _player; }
             set { _player = value; }
         }
 
- public string MessageDisplay
+        public string MessageDisplay
         {
             get { return _currentLocation.Message; }
         }
@@ -42,8 +42,13 @@ private DateTime _gameStartTime;
         public Location CurrentLocation
         {
             get { return _currentLocation; }
-            set { _currentLocation = value; }
+            set
+            {
+                _currentLocation = value;
+                OnPropertyChanged(nameof(CurrentLocation));
+            }
         }
+
         public Location NorthLocation
         {
             get { return _northLocation; }
@@ -102,19 +107,12 @@ private DateTime _gameStartTime;
                 }
             }
         }
-        //
-        // shortened code with same functionality as above
-        //
+
         public bool HasEastLocation { get { return EastLocation != null; } }
+
         public bool HasSouthLocation { get { return SouthLocation != null; } }
+
         public bool HasWestLocation { get { return WestLocation != null; } }
-     
-
-      
-
-      
-
-       
 
         #endregion
 
@@ -125,34 +123,26 @@ private DateTime _gameStartTime;
 
         }
 
-        public GameSessionViewModel(Player player, Map gameMap,  GameMapCoordinates currentLocationCoordinates)
+        public GameSessionViewModel(Player player, Map gameMap, GameMapCoordinates currentLocationCoordinates)
         {
             _player = player;
             _gameMap = gameMap;
- _gameMap.CurrentLocationCoordinates = currentLocationCoordinates;
+            _gameMap.CurrentLocationCoordinates = currentLocationCoordinates;
             _currentLocation = _gameMap.CurrentLocation;
-          
-        InitializeView();
+
+            InitializeView();
         }
 
         #endregion
 
         #region METHODS
 
-        /// <summary>
-        /// initial setup of the game session view
-        /// </summary>
         private void InitializeView()
         {
             _gameStartTime = DateTime.Now;
             UpdateAvailableTravelPoints();
         }
 
-        
-        /// <summary>
-        /// running time of game
-        /// </summary>
-        /// <returns></returns>
         private TimeSpan GameTime()
         {
             return DateTime.Now - _gameStartTime;
@@ -160,9 +150,7 @@ private DateTime _gameStartTime;
 
         private void UpdateAvailableTravelPoints()
         {
-            //
-            // reset travel location information
-            //
+          
             NorthLocation = null;
             EastLocation = null;
             SouthLocation = null;
@@ -191,24 +179,15 @@ private DateTime _gameStartTime;
 
         private void OnPlayerMove()
         {
-            //
-            // update player stats when in new location
-            //
+           
             if (!_player.HasVisited(_currentLocation))
             {
-                //
-                // add location to list of visited locations
-                //
                 _player.LocationsVisited.Add(_currentLocation);
 
-                // 
-                // update experience points
-                //
+               
                 _player.ExpierencePoints += _currentLocation.ModifiyExperiencePoints;
 
-                //
-                // update health
-                //
+               
                 if (_currentLocation.ModifyHealth != 0)
                 {
                     _player.Health += _currentLocation.ModifyHealth;
@@ -219,21 +198,13 @@ private DateTime _gameStartTime;
                     }
                 }
 
-                //
-                // update lives
-                //
+                
                 if (_currentLocation.ModifyLives != 0) _player.Lives += _currentLocation.ModifyLives;
 
-                //
-                // display a new message if available
-                //
                 OnPropertyChanged(nameof(MessageDisplay));
             }
         }
 
-        /// <summary>
-        /// travel north
-        /// </summary>
         public void MoveNorth()
         {
             if (HasNorthLocation)
@@ -245,9 +216,6 @@ private DateTime _gameStartTime;
             }
         }
 
-        /// <summary>
-        /// travel east
-        /// </summary>
         public void MoveEast()
         {
             if (HasEastLocation)
@@ -259,9 +227,6 @@ private DateTime _gameStartTime;
             }
         }
 
-        /// <summary>
-        /// travel south
-        /// </summary>
         public void MoveSouth()
         {
             if (HasSouthLocation)
@@ -273,9 +238,6 @@ private DateTime _gameStartTime;
             }
         }
 
-        /// <summary>
-        /// travel west
-        /// </summary>
         public void MoveWest()
         {
             if (HasWestLocation)
@@ -286,11 +248,10 @@ private DateTime _gameStartTime;
                 OnPlayerMove();
             }
         }
+      
         #endregion
 
         #region EVENTS
-
-
 
         #endregion
     }

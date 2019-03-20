@@ -87,16 +87,12 @@ namespace TB_QuestGame.Models
             }
         }
 
-        //
-        // get the north location if it exists
-        //
+       
         public Location NorthLocation(Player player)
         {
             Location northLocation = null;
 
-            //
-            // not on north border
-            //
+          
             if (_currentLocationCoordinates.Row > 0)
             {
                 Location nextNorthLocation = _mapLocations[_currentLocationCoordinates.Row - 1, _currentLocationCoordinates.Column];
@@ -114,9 +110,7 @@ namespace TB_QuestGame.Models
             return northLocation;
         }
 
-        //
-        // get the east location if it exists
-        //
+       
         public Location EastLocation(Player player)
         {
             Location eastLocation = null;
@@ -141,9 +135,7 @@ namespace TB_QuestGame.Models
             return eastLocation;
         }
 
-        //
-        // get the south location if it exists
-        //
+       
         public Location SouthLocation(Player player)
         {
             Location southLocation = null;
@@ -168,9 +160,7 @@ namespace TB_QuestGame.Models
             return southLocation;
         }
 
-        //
-        // get the west location if it exists
-        //
+        
         public Location WestLocation(Player player)
         {
             Location westLocation = null;

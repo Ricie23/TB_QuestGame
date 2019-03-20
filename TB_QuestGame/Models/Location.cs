@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TB_QuestGame.Models
 {
-  public class Location
+  public class Location : ObservableObject
     {
         #region FIELDS
 
@@ -20,12 +20,24 @@ namespace TB_QuestGame.Models
         private int _modifyHealth;
         private int _modifyLives;
         private string _message;
-
+        private string _imageFileName;
 
 
         #endregion
 
         #region PROPERTIES
+
+        public string ImageFileName
+        {
+            get { return _imageFileName; }
+            set { _imageFileName = value; }
+        }
+
+        public string ImageFilePath
+        {
+            get { return @"../Images/" + _imageFileName; }
+        }
+
         public int ModifiyExperiencePoints
         {
             get { return _modifiyExperiencePoints; }
@@ -41,7 +53,9 @@ namespace TB_QuestGame.Models
         public int ModifyHealth
         {
             get { return _modifyHealth; }
-            set { _modifyHealth = value; }
+            set { _modifyHealth = value;
+                
+            }
         }
 
         public int ModifyLives
@@ -73,22 +87,28 @@ namespace TB_QuestGame.Models
         public int Exp
         {
             get { return _exp; }
-            set { _exp = value; }
+            set { _exp = value;
+                OnPropertyChanged(nameof(Exp));
+            }
         }
 
 
         public string Name
         {
             get { return _name; }
-            set { _name = value; }
+            set
+            {
+                _name = value;
+                OnPropertyChanged(nameof(Name));
+            }
         }
-
-
+        
         public int Id
         {
             get { return _id; }
             set { _id = value; }
         }
+
         #endregion
 
         #region CONSTRUCTORS
@@ -96,6 +116,7 @@ namespace TB_QuestGame.Models
         #endregion
 
         #region METHODS
+
         public bool IsAccessibleByExperiencePoints(int playerExperiencePoints)
         {
             return playerExperiencePoints >= _requiredExp ? true : false;

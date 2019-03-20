@@ -99,13 +99,28 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="PresentationLayer\GameSessionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\cyberpunk-street.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bar.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\apratment.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\office.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\gambler.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

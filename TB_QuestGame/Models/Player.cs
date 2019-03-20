@@ -18,6 +18,7 @@ namespace TB_QuestGame.Models
         private int _lives;
         private int _xp;
         private List<Location> _locationsVisited;
+
         #endregion
 
         #region PROPERTIES
@@ -25,13 +26,20 @@ namespace TB_QuestGame.Models
         public int Health
         {
             get { return _health; }
-            set { _health = value; }
+            set { _health = value;
+                OnPropertyChanged(nameof(Health));
+            }
+            
         }
+
         public int Lives
         {
             get { return _lives; }
-            set { _lives = value; }
+            set { _lives = value;
+                OnPropertyChanged(nameof(Lives));
+            }
         }
+
         public int ExpierencePoints
         {
             get { return _xp; }
@@ -40,6 +48,7 @@ namespace TB_QuestGame.Models
             }
 
         }
+
         public List<Location> LocationsVisited
         {
             get { return _locationsVisited; }
@@ -48,10 +57,12 @@ namespace TB_QuestGame.Models
         #endregion
 
         #region CONSTRUCTORS
+
         public Player()
         {
             _locationsVisited = new List<Location>();
         }
+        
         #endregion
 
         #region METHODS
@@ -75,6 +86,7 @@ namespace TB_QuestGame.Models
 
             return $"My Name's Detective {_name} and I'm {article} {Race}.";
         }
+      
         #endregion
 
     }
