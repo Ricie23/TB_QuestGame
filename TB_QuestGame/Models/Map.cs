@@ -13,9 +13,16 @@ namespace TB_QuestGame.Models
         private Location[,] _mapLocations;
         private int _maxRows, _maxColumns;
         private GameMapCoordinates _currentLocationCoordinates;
+        private List<GameItem> _standardGameItems;
         #endregion
 
         #region PROPERTIES
+        public List<GameItem> StandardGameItems
+        {
+            get { return _standardGameItems; }
+            set { _standardGameItems = value; }
+        }
+
         public Location[,] MapLocations
         {
             get { return _mapLocations; }

@@ -222,6 +222,10 @@
                     Style="{StaticResource BorderStyle}" HorizontalAlignment="Left" Width="423" Grid.Column="1" Margin="215,365,0,0" Grid.RowSpan="2">
                     <Grid
                         Margin="0,-1,-1,-24" HorizontalAlignment="Right" Width="412">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="168*"/>
+                            <RowDefinition Height="17*"/>
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="2*"/>
@@ -229,7 +233,7 @@
                         </Grid.ColumnDefinitions>
                         <Label Content="Current Location:" Style="{StaticResource MainPanelLabelStyle}" FontSize="10" Grid.Column="0" HorizontalAlignment="Left" Margin="0,6,0,0" VerticalAlignment="Top" Width="113" Height="52" Grid.ColumnSpan="2"/>
                         <TextBox x:Name="TxtBox_CurrentLocation"
-                            Grid.Column="1" Style="{StaticResource MainPanelTextBoxStyle}" Text="{Binding CurrentLocation.Name, Mode=OneWay}" Margin="10,6,0,159" Width="Auto" ></TextBox>
+                            Grid.Column="1" Style="{StaticResource MainPanelTextBoxStyle}" Text="{Binding CurrentLocation.Name, Mode=OneWay}" Margin="10,6,0,142" Width="Auto" ></TextBox>
                         <Button x:Name="BTN_North"
                                  Click="NorthTravelButton_Click"
                             Grid.ColumnSpan="2" Style="{StaticResource MainPanelButtonStyle}" Content="North" HorizontalAlignment="Left" Margin="80,97,0,0" VerticalAlignment="Top" Width="74"/>
@@ -245,24 +249,24 @@
                             Content="West" HorizontalAlignment="Left" Margin="5,116,0,0" Style="{StaticResource MainPanelButtonStyle}" VerticalAlignment="Top" Width="75"/>
                         <Label Content="Available Locations: " Grid.Column="1" Style="{StaticResource MainPanelLabelStyle}" HorizontalAlignment="Left" Margin="143,27,0,0" VerticalAlignment="Top" Width="166" Grid.ColumnSpan="2"/>
                         <Label Content="North:"  Style="{StaticResource MainPanelLabelStyle}" FontSize="10"  Grid.Column="1" HorizontalAlignment="Left" Margin="125,49,0,0" VerticalAlignment="Top" Width="48"/>
-                        <Label Content="South:" Style="{StaticResource MainPanelLabelStyle}" FontSize="10" Grid.Column="1" HorizontalAlignment="Left" Margin="125,73,0,86" Width="43"/>
+                        <Label Content="South:" Style="{StaticResource MainPanelLabelStyle}" FontSize="10" Grid.Column="1" HorizontalAlignment="Left" Margin="125,73,0,69" Width="43"/>
                         <Label Content="East:" Style="{StaticResource MainPanelLabelStyle}" FontSize="10" Grid.Column="1" HorizontalAlignment="Left" Margin="130,99,0,0" VerticalAlignment="Top" Width="43"/>
                         <Label Content="West:" Style="{StaticResource MainPanelLabelStyle}" FontSize="10" Grid.Column="1" HorizontalAlignment="Left" Margin="130,121,0,0" VerticalAlignment="Top" Width="43"/>
                         <TextBox x:Name="TxBox_North"
                                  Text="{Binding NorthLocation.Name, Mode=OneWay}" 
-                                 Grid.Column="1" Style="{StaticResource MainPanelTextBoxStyle}" FontSize="10"  Margin="173,49,36,116" Grid.ColumnSpan="2" />
+                                 Grid.Column="1" Style="{StaticResource MainPanelTextBoxStyle}" FontSize="10"  Margin="173,49,36,99" Grid.ColumnSpan="2" />
                         <TextBox x:Name="TxBox_South" 
                                  Text="{Binding SouthLocation.Name, Mode=OneWay}" 
-                                 Grid.Column="1" Style="{StaticResource MainPanelTextBoxStyle}" FontSize="10" Margin="173,74,36,91" Grid.ColumnSpan="2" />
+                                 Grid.Column="1" Style="{StaticResource MainPanelTextBoxStyle}" FontSize="10" Margin="173,74,36,74" Grid.ColumnSpan="2" />
                         <TextBox x:Name="TxBox_East"
                                  Text="{Binding EastLocation.Name, Mode=OneWay}" 
-                                 Grid.Column="1" Style="{StaticResource MainPanelTextBoxStyle}" FontSize="10" Margin="173,98,36,67" Grid.ColumnSpan="2" />
+                                 Grid.Column="1" Style="{StaticResource MainPanelTextBoxStyle}" FontSize="10" Margin="173,98,36,50" Grid.ColumnSpan="2" />
                         <TextBox x:Name="TxBox_West"
                                  Text="{Binding WestLocation.Name, Mode=OneWay}" 
-                                 Grid.Column="1" Style="{StaticResource MainPanelTextBoxStyle}" FontSize="10" Margin="173,121,36,44" Grid.ColumnSpan="2" />
+                                 Grid.Column="1" Style="{StaticResource MainPanelTextBoxStyle}" FontSize="10" Margin="173,121,36,27" Grid.ColumnSpan="2" />
                         <TextBox  x:Name="TxtBox_Descript"
                             Style="{StaticResource MainPanelTextBoxStyle}" Text="{Binding CurrentLocation.Description, Mode=OneWay}"
-                                 TextWrapping="Wrap" Margin="0,31,81,94" FontSize="10" Width="Auto" Grid.ColumnSpan="2" Height="60" />
+                                 TextWrapping="Wrap" Margin="0,31,81,77" FontSize="10" Width="Auto" Grid.ColumnSpan="2" Height="60" />
 
                     </Grid>
                 </Border>

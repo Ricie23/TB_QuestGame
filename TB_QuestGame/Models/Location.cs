@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace TB_QuestGame.Models
 {
-  public class Location : ObservableObject
+    public class Location : ObservableObject
     {
         #region FIELDS
 
@@ -21,11 +22,26 @@ namespace TB_QuestGame.Models
         private int _modifyLives;
         private string _message;
         private string _imageFileName;
+        private int _requiredClueId;
+        private ObservableCollection<GameItemQuantity> _gameItems;
+
+
 
 
         #endregion
-
         #region PROPERTIES
+
+        public ObservableCollection<GameItemQuantity> GameItems
+        {
+            get { return _gameItems; }
+            set { _gameItems = value; }
+        }
+
+        public int RequiredClueId
+        {
+            get { return _requiredClueId; }
+            set { _requiredClueId = value; }
+        }
 
         public string ImageFileName
         {
@@ -53,8 +69,10 @@ namespace TB_QuestGame.Models
         public int ModifyHealth
         {
             get { return _modifyHealth; }
-            set { _modifyHealth = value;
-                
+            set
+            {
+                _modifyHealth = value;
+
             }
         }
 
@@ -87,7 +105,9 @@ namespace TB_QuestGame.Models
         public int Exp
         {
             get { return _exp; }
-            set { _exp = value;
+            set
+            {
+                _exp = value;
                 OnPropertyChanged(nameof(Exp));
             }
         }
@@ -102,7 +122,7 @@ namespace TB_QuestGame.Models
                 OnPropertyChanged(nameof(Name));
             }
         }
-        
+
         public int Id
         {
             get { return _id; }
@@ -112,7 +132,10 @@ namespace TB_QuestGame.Models
         #endregion
 
         #region CONSTRUCTORS
-
+        public Location()
+        {
+            _gameItems = new ObservableCollection<GameItemQuantity>();
+        }
         #endregion
 
         #region METHODS

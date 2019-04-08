@@ -1,23 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace TB_QuestGame.Models
 {
-    public class Player:Character
+    public class Player : Character
     {
         #region ENUMS
-       
+
         #endregion
 
         #region FIELDS
-        
+
         private int _health;
         private int _lives;
         private int _xp;
         private List<Location> _locationsVisited;
+        private ObservableCollection<GameItemQuantity> _inventory;
+        private ObservableCollection<GameItemQuantity> _mediPack;
+        private ObservableCollection<GameItemQuantity> _currency;
+        private ObservableCollection<GameItemQuantity> _weapons;
+        private ObservableCollection<GameItemQuantity> _clues;
 
         #endregion
 
@@ -26,16 +33,20 @@ namespace TB_QuestGame.Models
         public int Health
         {
             get { return _health; }
-            set { _health = value;
+            set
+            {
+                _health = value;
                 OnPropertyChanged(nameof(Health));
             }
-            
+
         }
 
         public int Lives
         {
             get { return _lives; }
-            set { _lives = value;
+            set
+            {
+                _lives = value;
                 OnPropertyChanged(nameof(Lives));
             }
         }
@@ -43,7 +54,9 @@ namespace TB_QuestGame.Models
         public int ExpierencePoints
         {
             get { return _xp; }
-            set { _xp = value;
+            set
+            {
+                _xp = value;
                 OnPropertyChanged(nameof(ExpierencePoints));
             }
 
@@ -54,6 +67,37 @@ namespace TB_QuestGame.Models
             get { return _locationsVisited; }
             set { _locationsVisited = value; }
         }
+
+        public ObservableCollection<GameItemQuantity> Inventory
+        {
+            get { return _inventory; }
+            set { _inventory = value; }
+        }
+
+        public ObservableCollection<GameItemQuantity> Weapons
+        {
+            get { return _weapons; }
+            set { _weapons = value; }
+        }
+
+        public ObservableCollection<GameItemQuantity> MediPack
+        {
+            get { return _mediPack; }
+            set { _mediPack = value; }
+        }
+
+        public ObservableCollection<GameItemQuantity> Currency
+        {
+            get { return _currency; }
+            set { _currency = value; }
+        }
+
+        public ObservableCollection<GameItemQuantity> Clue
+        {
+            get { return _clues; }
+            set { _clues = value; }
+        }
+
         #endregion
 
         #region CONSTRUCTORS
@@ -62,7 +106,7 @@ namespace TB_QuestGame.Models
         {
             _locationsVisited = new List<Location>();
         }
-        
+
         #endregion
 
         #region METHODS
@@ -86,7 +130,7 @@ namespace TB_QuestGame.Models
 
             return $"My Name's Detective {_name} and I'm {article} {Race}.";
         }
-      
+
         #endregion
 
     }

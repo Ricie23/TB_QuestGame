@@ -20,7 +20,13 @@ namespace TB_QuestGame.DataLayer
                 LocationId = 0,
                 ExpierencePoints = 10,
                 Lives = 2,
-                Health = 100
+                Health = 100,
+                  Inventory = new ObservableCollection<GameItemQuantity>()
+                {
+                    new GameItemQuantity(GameItemById(2001),1),
+                    new GameItemQuantity(GameItemById(2003),2),
+                    new GameItemQuantity(GameItemById(4001),10)
+                }
 
             };
 
@@ -36,6 +42,12 @@ namespace TB_QuestGame.DataLayer
             };
         }
 
+
+        private static GameItem GameItemById(int id)
+        {
+            return StandardGameItems().FirstOrDefault(i => i.Id == id);
+        }
+
         public static GameMapCoordinates InitialGameMapLocation()
         {
             return new GameMapCoordinates() { Row = 0, Column = 1 };
@@ -44,8 +56,10 @@ namespace TB_QuestGame.DataLayer
         public static Map GameMap()
         {
             int rows = 3;
-            int columns = 3;
+            int columns = 4;
             Map gameMap = new Map(rows, columns);
+
+            gameMap.StandardGameItems = StandardGameItems();
 
 
             {
@@ -58,7 +72,7 @@ namespace TB_QuestGame.DataLayer
                     ModifiyExperiencePoints = 10,
                     Message = "I'm gettin' too old for this kinda stuff. If I could just get one more case to pay for a one way ticket down to sunalito I can rest. " +
                     "But I guess I spoke to soon when this dame walked in. as they say careful what ya wish for.",
-                    ImageFileName= "office.jpg"
+                    ImageFileName = "office.jpg"
                 };
 
                 gameMap.MapLocations[1, 1] = new Location()
@@ -68,9 +82,9 @@ namespace TB_QuestGame.DataLayer
                     Description = "The bustling city street and the heart of New Chicago. bustling hover cars, self-driving ubers, and many people walking around during the day. at night it's not so pretty.",
                     Accessible = true,
                     ModifiyExperiencePoints = 10,
-                    Message="This city is gettin' too dang big. what happened to the good ol days when taxis actually had drivers and people were nice to each other? the address Lori's sister gave me is on the east side of town." +
+                    Message = "This city is gettin' too dang big. what happened to the good ol days when taxis actually had drivers and people were nice to each other? the address Lori's sister gave me is on the east side of town." +
                     "but maybe Joey might know somethin. seeins how he knows everybody.",
-                    ImageFileName= "cyberpunk-street.png"
+                    ImageFileName = "cyberpunk-street.png"
 
                 };
 
@@ -81,8 +95,8 @@ namespace TB_QuestGame.DataLayer
                     Description = "A small hole in the wall nightclub and bar. Joey tries to keep the place nice, but let's just say it's not a club for the top-notch citizens of New Chicago.",
                     Accessible = true,
                     ModifiyExperiencePoints = 10,
-                    Message="haven't been in here in a while. Joey's lookin a little rough. this place ain't quite the same as it used to be",
-                    ImageFileName= "bar.gif"
+                    Message = "haven't been in here in a while. Joey's lookin a little rough. this place ain't quite the same as it used to be",
+                    ImageFileName = "bar.gif"
 
                 };
 
@@ -95,9 +109,15 @@ namespace TB_QuestGame.DataLayer
                     RequiredExp = 40,
                     ModifiyExperiencePoints = 20,
                     ModifyHealth = -25,
-                    Message="They Jumped me! I wasn't ready for that but boy I'm ready now.",
-                    ImageFileName= "gambler.jpg"
-         
+                    Message = "They Jumped me! I wasn't ready for that but boy I'm ready now.",
+                    ImageFileName = "gambler.jpg",
+                    RequiredClueId=1001,
+                       GameItems = new ObservableCollection<GameItemQuantity>
+                {
+                    new GameItemQuantity(GameItemById(1002), 1)
+                }
+
+
                 };
 
                 gameMap.MapLocations[1, 2] = new Location()
@@ -107,15 +127,73 @@ namespace TB_QuestGame.DataLayer
                     Description = "nice place but nothin special. quite a few floorss up in a decent part of town.",
                     Accessible = true,
                     ModifiyExperiencePoints = 10,
-                    Message="hmm not a whole lotta help in here. seems like a pretty nice gal. kinda strange that she has a matchbook from Joey's club though.",
-                    ImageFileName= "apratment.jpg"
+                    Message = "hmm not a whole lotta help in here. seems like a pretty nice gal. kinda strange that she has a matchbook from Joey's club though.",
+                    ImageFileName = "apratment.jpg",
+                       GameItems = new ObservableCollection<GameItemQuantity>
+                {
+                    new GameItemQuantity(GameItemById(1001), 1)
+                }
+                };
+                gameMap.MapLocations[2, 1] = new Location()
+                {
+                    Id = 5,
+                    Name = "TeleShift Factory",
+                    Description = "TeleShift factory makes the TeleShift transportation systems. a new device to instantly move you from one place to another.",
+                    Accessible = false,
+                    ModifiyExperiencePoints = 10,
+                    Message = "a very large industrial area. there isn't a whole lot of people around. there seems to be a locked door with a card reader",
+                    ImageFileName = "factory.gif",
+                       GameItems = new ObservableCollection<GameItemQuantity>
+                {
+                    new GameItemQuantity(GameItemById(1003), 1)
+                }
+
+                };
+                gameMap.MapLocations[2, 4] = new Location()
+                {
+                    Id = 6,
+                    Name = "Xorantian Mines",
+                    Description = "the planet Xoranto is not an ideal vacation place. it is rich with plantinium which is used for just about everything.",
+                    Accessible = false,
+                    ModifiyExperiencePoints = 60,
+                    Message = "the TeleShift device I found seemed to have malfunctioned and took me here and immediatly met by the xantorian supervisor to work in the mines. Look there are the missing people!",
+                    ImageFileName = "mines.jpg",
+                    RequiredClueId=1003  
                 };
 
                 return gameMap;
             };
 
 
-
         }
+
+        public static List<GameItem> StandardGameItems()
+            {
+
+                return new List<GameItem>()
+                {
+                    new Weapon(2001, "Colt .8 snubnose blaster", 600, 1,12,6, "a laser blaster created to look like a classic snubnose revolver.",0),
+                    new Weapon (2002, "phaseball bat", 15, 1,6,0,"the bat used for a traditional all-american sport.",0),
+                    new Weapon(2003, "fists", 0,0,4,0, "good ol' fashion put em up dukes",0),
+                    new MediPack(3001, "Vape sticks",10, 10,0,"a pack of disposable vape sticks. comes in a pack of 10.",0),
+                    new MediPack(3002, "glass of scotch",4, 20,0,"a nice smooth glass of scotch.",0),
+                    new MediPack(3003, "bottle of scotch", 60,75,1,"a nice bottle of scotch is always a nice bonus.",0),
+                    new Currency(4001, "credits",10,Currency.CurrencyType.Credits,"U.S. credits, paper bills are obscolete. pennies are all over the place still.",0),
+                    new Clues(1001,"matchbook",0,"a souvenier matchbook replica from Joey's bar. there is a word written on the back. \"glorgan\"",5,
+                    "this doesn't really mean much. maybe someone at Joey's Club might know something about that word.",Clues.UseActionType.OPENLOCATION),
+                    new Clues(1002, "Employee ID card",0,"an employee ID card from the Teleshift Industries factory",10,
+                    "this doesn't help much, maybe I should check out the TeleShift factory",Clues.UseActionType.OPENLOCATION),
+                    new Clues(1003, "TeleShift Device",3000,"a super new device used to teleport. many people are skeptical.",40,
+                    "you try out the TeleShift to go home but it takes you to Xoranto",Clues.UseActionType.MOVEPLAYER)
+
+
+
+                };
+            }
+
+
+
+
+
     }
 }
