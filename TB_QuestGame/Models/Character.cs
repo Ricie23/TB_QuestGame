@@ -23,7 +23,7 @@ namespace TB_QuestGame.Models
         protected int _locationid;
         protected int _age;
         protected RaceType _race;
-        #endregion
+        #endregion 
 
         #region PROPERTIES
         public int Id
