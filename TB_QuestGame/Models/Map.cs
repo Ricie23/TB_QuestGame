@@ -14,7 +14,10 @@ namespace TB_QuestGame.Models
         private int _maxRows, _maxColumns;
         private GameMapCoordinates _currentLocationCoordinates;
         private List<GameItem> _standardGameItems;
+        
+
         #endregion
+
 
         #region PROPERTIES
         public List<GameItem> StandardGameItems
@@ -53,6 +56,7 @@ namespace TB_QuestGame.Models
         #endregion
 
         #region METHODS
+
         public void MoveNorth()
         {
             //
@@ -108,7 +112,7 @@ namespace TB_QuestGame.Models
                 // location exists and player can access location
                 //
                 if (nextNorthLocation != null &&
-                    (nextNorthLocation.Accessible == true || nextNorthLocation.IsAccessibleByExperiencePoints(player.ExpierencePoints)))
+                    (nextNorthLocation.Accessible == true || nextNorthLocation.IsAccessibleByExperiencePoints(player.ExpierencePoints))) // || nextNorthLocation.isAccessibleByClueid()))
                 {
                     northLocation = nextNorthLocation;
                 }
@@ -191,6 +195,47 @@ namespace TB_QuestGame.Models
 
             return westLocation;
         }
+        #endregion
+        #region ACTION METHODS
+
+        public string OpenLocationsByClue (int requiredClueId)
+        {
+            string message = "The Clue  doesn't tell us much.";
+            Location mapLocation = new Location();
+
+            for (int row = 0; row < _maxRows; row++)
+            {
+                for (int column = 0; column < _maxColumns; column++)
+                {
+                    mapLocation = _mapLocations[row, column];
+
+                    if (mapLocation != null && mapLocation.RequiredClueId == requiredClueId)
+                    {
+                        mapLocation.Accessible = true;
+                        message = $"{mapLocation.Name} is now accessible.";
+                    }
+                }
+            }
+
+            return message;
+        }
+        //public string MovePlayerFromClue(int clueID)
+        //{
+        //    string message = "the devices transports you.";
+        //    Location mapLocation = new Location();
+        //    for (int row =0; row < _maxRows; row++)
+        //    {
+        //        for (int column = 0; column < _maxColumns; column++)
+        //        {
+        //            mapLocation = _mapLocations[row, column];
+        //            if (mapLocation != null && mapLocation.RequiredClueId == clueID)
+        //            {
+        //                CurrentLocationCoordinates=_mapLocations[3,4]
+        //            }
+        //        }
+
+        //    }
+       // }
         #endregion
     }
 }

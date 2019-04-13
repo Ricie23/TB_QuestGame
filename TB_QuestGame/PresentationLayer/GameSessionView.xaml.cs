@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace TB_QuestGame.PresentationLayer
 {
     /// <summary>
@@ -47,9 +48,28 @@ namespace TB_QuestGame.PresentationLayer
             _gameSessionViewModel.MoveWest();
         }
 
-        private void BTN_West_Click(object sender, RoutedEventArgs e)
+        private void PickUpButton_Click(object sender, RoutedEventArgs e)
         {
+            if (LocationItemsDataGrid.SelectedItem != null)
+            {
+                _gameSessionViewModel.AddItemToInventory();
+            }
+        }
 
+        private void PutDownButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (InventoryDataGrid.SelectedItem != null)
+            {
+                _gameSessionViewModel.RemoveItemFromInventory();
+            }
+        }
+
+        private void UseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (InventoryDataGrid.SelectedItem != null)
+            {
+                _gameSessionViewModel.OnUseGameItem();
+            }
         }
     }
 }

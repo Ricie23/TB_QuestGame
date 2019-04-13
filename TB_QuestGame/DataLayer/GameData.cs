@@ -21,11 +21,11 @@ namespace TB_QuestGame.DataLayer
                 ExpierencePoints = 10,
                 Lives = 2,
                 Health = 100,
-                  Inventory = new ObservableCollection<GameItemQuantity>()
+                  Inventory = new ObservableCollection<GameItem>()
                 {
-                    new GameItemQuantity(GameItemById(2001),1),
-                    new GameItemQuantity(GameItemById(2003),2),
-                    new GameItemQuantity(GameItemById(4001),10)
+                    GameItemById(2001),
+                    GameItemById(2003),
+                    GameItemById(4001)
                 }
 
             };
@@ -72,7 +72,12 @@ namespace TB_QuestGame.DataLayer
                     ModifiyExperiencePoints = 10,
                     Message = "I'm gettin' too old for this kinda stuff. If I could just get one more case to pay for a one way ticket down to sunalito I can rest. " +
                     "But I guess I spoke to soon when this dame walked in. as they say careful what ya wish for.",
-                    ImageFileName = "office.jpg"
+                    ImageFileName = "office.jpg",
+                    GameItems = new ObservableCollection<GameItem>
+                    {
+                        GameItemById(3001),
+                        GameItemById(3002)
+                    }
                 };
 
                 gameMap.MapLocations[1, 1] = new Location()
@@ -96,7 +101,12 @@ namespace TB_QuestGame.DataLayer
                     Accessible = true,
                     ModifiyExperiencePoints = 10,
                     Message = "haven't been in here in a while. Joey's lookin a little rough. this place ain't quite the same as it used to be",
-                    ImageFileName = "bar.gif"
+                    ImageFileName = "bar.gif",
+                    GameItems= new ObservableCollection<GameItem>
+                    {
+                        GameItemById(3003),
+                        GameItemById(2002)
+                    }
 
                 };
 
@@ -106,15 +116,15 @@ namespace TB_QuestGame.DataLayer
                     Name = "Gambler's Den",
                     Description = "A hidden speak easy type room tucked away in Joey's Club. high rollers only.",
                     Accessible = false,
-                    RequiredExp = 40,
+                    RequiredExp = 120,
                     ModifiyExperiencePoints = 20,
                     ModifyHealth = -25,
                     Message = "They Jumped me! I wasn't ready for that but boy I'm ready now.",
                     ImageFileName = "gambler.jpg",
                     RequiredClueId=1001,
-                       GameItems = new ObservableCollection<GameItemQuantity>
+                       GameItems = new ObservableCollection<GameItem>
                 {
-                    new GameItemQuantity(GameItemById(1002), 1)
+                   GameItemById(1002)
                 }
 
 
@@ -129,9 +139,9 @@ namespace TB_QuestGame.DataLayer
                     ModifiyExperiencePoints = 10,
                     Message = "hmm not a whole lotta help in here. seems like a pretty nice gal. kinda strange that she has a matchbook from Joey's club though.",
                     ImageFileName = "apratment.jpg",
-                       GameItems = new ObservableCollection<GameItemQuantity>
+                       GameItems = new ObservableCollection<GameItem>
                 {
-                    new GameItemQuantity(GameItemById(1001), 1)
+                   GameItemById(1001)
                 }
                 };
                 gameMap.MapLocations[2, 1] = new Location()
@@ -143,13 +153,15 @@ namespace TB_QuestGame.DataLayer
                     ModifiyExperiencePoints = 10,
                     Message = "a very large industrial area. there isn't a whole lot of people around. there seems to be a locked door with a card reader",
                     ImageFileName = "factory.gif",
-                       GameItems = new ObservableCollection<GameItemQuantity>
+                    RequiredClueId=1002,
+                    RequiredExp=120,
+                       GameItems = new ObservableCollection<GameItem>
                 {
-                    new GameItemQuantity(GameItemById(1003), 1)
+                    GameItemById(1003)
                 }
 
                 };
-                gameMap.MapLocations[2, 4] = new Location()
+                gameMap.MapLocations[2, 3] = new Location()
                 {
                     Id = 6,
                     Name = "Xorantian Mines",

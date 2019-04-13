@@ -19,16 +19,24 @@ namespace TB_QuestGame.Models
         private int _health;
         private int _lives;
         private int _xp;
+        private int _wealth;
+
+   
         private List<Location> _locationsVisited;
-        private ObservableCollection<GameItemQuantity> _inventory;
-        private ObservableCollection<GameItemQuantity> _mediPack;
-        private ObservableCollection<GameItemQuantity> _currency;
-        private ObservableCollection<GameItemQuantity> _weapons;
-        private ObservableCollection<GameItemQuantity> _clues;
+        private ObservableCollection<GameItem> _inventory;
+        private ObservableCollection<GameItem> _mediPack;
+        private ObservableCollection<GameItem> _currency;
+        private ObservableCollection<GameItem> _weapons;
+        private ObservableCollection<GameItem> _clues;
 
         #endregion
 
         #region PROPERTIES
+     public int Wealth
+        {
+            get { return _wealth; }
+            set { _wealth = value; }
+        }
 
         public int Health
         {
@@ -38,7 +46,6 @@ namespace TB_QuestGame.Models
                 _health = value;
                 OnPropertyChanged(nameof(Health));
             }
-
         }
 
         public int Lives
@@ -68,31 +75,31 @@ namespace TB_QuestGame.Models
             set { _locationsVisited = value; }
         }
 
-        public ObservableCollection<GameItemQuantity> Inventory
+        public ObservableCollection<GameItem> Inventory
         {
             get { return _inventory; }
             set { _inventory = value; }
         }
 
-        public ObservableCollection<GameItemQuantity> Weapons
+        public ObservableCollection<GameItem> Weapons
         {
             get { return _weapons; }
             set { _weapons = value; }
         }
 
-        public ObservableCollection<GameItemQuantity> MediPack
+        public ObservableCollection<GameItem> MediPack
         {
             get { return _mediPack; }
             set { _mediPack = value; }
         }
 
-        public ObservableCollection<GameItemQuantity> Currency
+        public ObservableCollection<GameItem> Currency
         {
             get { return _currency; }
             set { _currency = value; }
         }
 
-        public ObservableCollection<GameItemQuantity> Clue
+        public ObservableCollection<GameItem> Clue
         {
             get { return _clues; }
             set { _clues = value; }
@@ -105,6 +112,10 @@ namespace TB_QuestGame.Models
         public Player()
         {
             _locationsVisited = new List<Location>();
+            _weapons = new ObservableCollection<GameItem>();
+            _mediPack = new ObservableCollection<GameItem>();
+            _clues = new ObservableCollection<GameItem>();
+            _currency = new ObservableCollection<GameItem>();
         }
 
         #endregion
@@ -116,6 +127,10 @@ namespace TB_QuestGame.Models
             return _locationsVisited.Contains(location);
         }
 
+        public void CalculateWealth()
+        {
+            Wealth = _inventory.Sum(i => i.Value);
+        }
 
         public override string DefaultGreeting()
         {
@@ -130,6 +145,41 @@ namespace TB_QuestGame.Models
 
             return $"My Name's Detective {_name} and I'm {article} {Race}.";
         }
+
+        public void UpdateInventoryCategories()
+        {
+            MediPack.Clear();
+            Weapons.Clear();
+            Currency.Clear();
+            Clue.Clear();
+
+            foreach (var gameItem in _inventory)
+            {
+                if (gameItem is MediPack) MediPack.Add(gameItem);
+                if (gameItem is Weapon) Weapons.Add(gameItem);
+                if (gameItem is Currency) Currency.Add(gameItem);
+                if (gameItem is Clues) Clue.Add(gameItem);
+            }
+        }
+      
+        
+        public void AddGameItemToInventory(GameItem selectedGameItem)
+        {
+            if (selectedGameItem != null)
+            {
+                _inventory.Add(selectedGameItem);
+            }
+        }
+
+       
+        public void RemoveGameItemFromInventory(GameItem selectedGameItem)
+        {
+            if (selectedGameItem != null)
+            {
+                _inventory.Remove(selectedGameItem);
+            }
+        }
+
 
         #endregion
 

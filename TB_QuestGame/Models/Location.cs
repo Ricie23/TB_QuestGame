@@ -23,7 +23,7 @@ namespace TB_QuestGame.Models
         private string _message;
         private string _imageFileName;
         private int _requiredClueId;
-        private ObservableCollection<GameItemQuantity> _gameItems;
+        private ObservableCollection<GameItem> _gameItems;
 
 
 
@@ -31,7 +31,7 @@ namespace TB_QuestGame.Models
         #endregion
         #region PROPERTIES
 
-        public ObservableCollection<GameItemQuantity> GameItems
+        public ObservableCollection<GameItem> GameItems
         {
             get { return _gameItems; }
             set { _gameItems = value; }
@@ -134,7 +134,7 @@ namespace TB_QuestGame.Models
         #region CONSTRUCTORS
         public Location()
         {
-            _gameItems = new ObservableCollection<GameItemQuantity>();
+            _gameItems = new ObservableCollection<GameItem>();
         }
         #endregion
 
@@ -143,8 +143,49 @@ namespace TB_QuestGame.Models
         public bool IsAccessibleByExperiencePoints(int playerExperiencePoints)
         {
             return playerExperiencePoints >= _requiredExp ? true : false;
+        
+        }
+        public bool isAccessibleByClueid(int playerClue)
+        {
+            return playerClue >= _requiredClueId ? true : false;
         }
 
+        public void AddGameItemToLocation(GameItem selectedGameItem)
+        {
+            if (selectedGameItem != null)
+            {
+                _gameItems.Add(selectedGameItem);
+            }
+
+            UpdateLocationGameItems();
+        }
+
+        public void RemoveGameItemFromLocation(GameItem selectedGameItem)
+        {
+            if (selectedGameItem != null)
+            {
+                _gameItems.Remove(selectedGameItem);
+            }
+
+            UpdateLocationGameItems();
+        }
+
+        public void UpdateLocationGameItems()
+        {
+            ObservableCollection<GameItem> updatedLocationGameItems = new ObservableCollection<GameItem>();
+
+            foreach (GameItem GameItem in _gameItems)
+            {
+                updatedLocationGameItems.Add(GameItem);
+            }
+
+            GameItems.Clear();
+
+            foreach (GameItem gameItem in updatedLocationGameItems)
+            {
+                GameItems.Add(gameItem);
+            }
+        }
         #endregion
     }
 

@@ -115,13 +115,7 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Margin="0,0,0,35"
-                    Style="{StaticResource BorderStyle}">
-                    <Label 
-                        Content="Inventory Interface"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Style="{StaticResource MainPanelLabelStyle}"/>
-                </Border>
+                    Style="{StaticResource BorderStyle}"/>
                 <Border
                     Grid.Row="0"
                     Grid.Column="1"
@@ -211,8 +205,18 @@
                             <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Content="Player Action&#xD;&#xA;Interface" Style="{StaticResource MainPanelLabelStyle}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
-                                Grid.Column="1" HorizontalAlignment="Left" Margin="40,38,0,0" VerticalAlignment="Top" Height="58" Width="155"/>
+                        <Button Content="Pick Up" HorizontalAlignment="Left"
+                                Style="{StaticResource MainPanelButtonStyle}"
+                                Margin="0,10,0,0" VerticalAlignment="Top" Width="92" Click="PickUpButton_Click"
+                                />
+                        <Button Content="Put Down" HorizontalAlignment="Left" 
+                               Style="{StaticResource MainPanelButtonStyle}"
+                                Click="PutDownButton_Click" Margin="0,10,0,0" VerticalAlignment="Top" Width="93" Grid.Column="2"/>
+                        <Button Content="Use Item" Grid.Column="1" HorizontalAlignment="Left"
+                                Style="{StaticResource MainPanelButtonStyle}"
+                                Click="UseButton_Click"
+                                Margin="10,10,0,0" VerticalAlignment="Top" Width="185"/>
+
 
 
                     </Grid>
@@ -273,6 +277,42 @@
                 <Image Source="{Binding CurrentLocation.ImageFilePath}" Grid.Column="1"  Margin="420,163,0,35" Grid.ColumnSpan="2"/>
             </Grid>
         </Border>
+        <DataGrid Margin="25,22,668,343" 
+            x:Name="InventoryDataGrid"
+                            ItemsSource="{Binding Player.Inventory}"
+                            SelectedItem="{Binding CurrentGameItem}"
+                            AutoGenerateColumns="False"
+                            HeadersVisibility="Column">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name"
+            Binding="{Binding Name, Mode=OneWay}"
+              Width="*"/>
+                <DataGridTextColumn Header="Value"
+          Binding="{Binding Value, Mode=OneWay}"
+         Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid 
+        x:Name="LocationItemsDataGrid"
+        ItemsSource="{Binding CurrentLocation.GameItems}" 
+       SelectedItem="{Binding CurrentGameItem}"
+         AutoGenerateColumns="False"
+       HeadersVisibility="Column" Margin="299,219,288,206">
+            <DataGrid.Columns>
+                <DataGridTextColumn 
+           Header="Items Description" 
+         IsReadOnly="True"                 
+      Binding="{Binding Information, Mode=OneWay}"
+       Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
 

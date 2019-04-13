@@ -67,7 +67,6 @@
     <Compile Include="Models\Clues.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\GameItem.cs" />
-    <Compile Include="Models\GameItemQuantity.cs" />
     <Compile Include="Models\GameMapLocation.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\Map.cs" />

@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TB_QuestGame.Models;
+using TB_QuestGame;
 using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Data;
 
 namespace TB_QuestGame.PresentationLayer
 {
@@ -17,10 +20,18 @@ namespace TB_QuestGame.PresentationLayer
         private Map _gameMap;
         private Location _currentLocation;
         private Location _northLocation, _eastLocation, _southLocation, _westLocation;
+        private GameItem _currentGameItem;
+        private string _currentLocationInformation;
 
         #endregion
 
         #region PROPERTIES 
+        public GameItem CurrentGameItem
+        {
+            get { return _currentGameItem; }
+            set { _currentGameItem = value; }
+        }
+
 
         public Player Player
         {
@@ -46,8 +57,11 @@ namespace TB_QuestGame.PresentationLayer
             {
                 _currentLocation = value;
                 OnPropertyChanged(nameof(CurrentLocation));
+                _currentLocationInformation = _currentLocation.Description;
+                OnPropertyChanged(nameof(CurrentLocationInformation));
             }
         }
+
 
         public Location NorthLocation
         {
@@ -90,6 +104,16 @@ namespace TB_QuestGame.PresentationLayer
                 _westLocation = value;
                 OnPropertyChanged(nameof(WestLocation));
                 OnPropertyChanged(nameof(HasWestLocation));
+            }
+        }
+
+        public string CurrentLocationInformation
+        {
+            get { return _currentLocationInformation; }
+            set
+            {
+                _currentLocationInformation = value;
+                OnPropertyChanged(nameof(CurrentLocationInformation));
             }
         }
 
@@ -141,6 +165,10 @@ namespace TB_QuestGame.PresentationLayer
         {
             _gameStartTime = DateTime.Now;
             UpdateAvailableTravelPoints();
+            _player.UpdateInventoryCategories();
+            _player.CalculateWealth();
+            _currentLocationInformation = CurrentLocation.Description;
+
         }
 
         private TimeSpan GameTime()
@@ -248,8 +276,136 @@ namespace TB_QuestGame.PresentationLayer
                 OnPlayerMove();
             }
         }
-      
+
         #endregion
+        #region ACTION METHODS
+        public void AddItemToInventory()
+        {
+            //
+            // confirm a game item selected and is in current location
+            // subtract from location and add to inventory
+            //
+            if (_currentGameItem != null && _currentLocation.GameItems.Contains(_currentGameItem))
+            {
+                //
+                // cast selected game item 
+                //
+                GameItem selectedGameItem = _currentGameItem as GameItem;
+
+                _currentLocation.RemoveGameItemFromLocation(selectedGameItem);
+                _player.AddGameItemToInventory(selectedGameItem);
+
+                OnPlayerPickUp(selectedGameItem);
+            }
+        }
+
+        public void RemoveItemFromInventory()
+        {
+            //
+            // confirm a game item selected and is in inventory
+            // subtract from inventory and add to location
+            //
+            if (_currentGameItem != null)
+            {
+                //
+                // cast selected game item 
+                //
+                GameItem selectedGameItem = _currentGameItem as GameItem;
+
+                _currentLocation.AddGameItemToLocation(selectedGameItem);
+                _player.RemoveGameItemFromInventory(selectedGameItem);
+
+                OnPlayerPutDown(selectedGameItem);
+            }
+        }
+
+        private void OnPlayerPickUp(GameItem gameItem)
+        {
+            _player.ExpierencePoints += gameItem.ExperiencePoints;
+            _player.Wealth += gameItem.Value;
+        }
+   
+        private void OnPlayerPutDown(GameItem gameItem)
+        {
+            _player.Wealth -= gameItem.Value;
+        }
+ 
+
+    public void OnUseGameItem()
+    {
+        switch (_currentGameItem)
+        {
+            case MediPack mediPack:
+                ProcessMediPackUse(mediPack);
+                break;
+            case Clues clues:
+                ProcessClueUse(clues);
+                break;
+            default:
+                break;
+        }
+    }
+
+        private void ProcessClueUse(Clues clues)
+        {
+            string message;
+
+            switch (clues.UseAction)
+            {
+                case Clues.UseActionType.OPENLOCATION:
+                    message = _gameMap.OpenLocationsByClue(clues.Id);
+                    CurrentLocationInformation = clues.UseMessage;
+                    break;
+                case Clues.UseActionType.MOVEPLAYER:
+                    
+                    CurrentLocationInformation = clues.UseMessage;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        private void ProcessMediPackUse(MediPack mediPack)
+        {
+            _player.Health += mediPack.HealthChange;
+            _player.Lives += mediPack.LivesChange;
+            _player.RemoveGameItemFromInventory(_currentGameItem);
+        }
+
+        private void OnPlayerDies(string message)
+        {
+            string messagetext = message +
+                "\n\nWould you like to play again?";
+
+            string titleText = "Death";
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxResult result = MessageBox.Show(messagetext, titleText, button);
+
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    ResetPlayer();
+                    break;
+                case MessageBoxResult.No:
+                    QuiteApplication();
+                    break;
+            }
+        }
+        private void QuiteApplication()
+        {
+            Environment.Exit(0);
+        }
+
+        /// <summary>
+        /// player chooses to reset game
+        /// </summary>
+        private void ResetPlayer()
+        {
+            Environment.Exit(0);
+        }
+        #endregion
+
 
         #region EVENTS
 
