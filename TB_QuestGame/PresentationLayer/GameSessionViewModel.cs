@@ -357,8 +357,9 @@ namespace TB_QuestGame.PresentationLayer
                     CurrentLocationInformation = clues.UseMessage;
                     break;
                 case Clues.UseActionType.MOVEPLAYER:
-                    
+                    CurrentLocation = _gameMap.MovePlayerFromClue(clues.Id);
                     CurrentLocationInformation = clues.UseMessage;
+                    OnPlayerMove();
                     break;
                 default:
                     break;

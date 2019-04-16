@@ -192,11 +192,13 @@ namespace TB_QuestGame.DataLayer
                     new MediPack(3003, "bottle of scotch", 60,75,1,"a nice bottle of scotch is always a nice bonus.",0),
                     new Currency(4001, "credits",10,Currency.CurrencyType.Credits,"U.S. credits, paper bills are obscolete. pennies are all over the place still.",0),
                     new Clues(1001,"matchbook",0,"a souvenier matchbook replica from Joey's bar. there is a word written on the back. \"glorgan\"",5,
-                    "this doesn't really mean much. maybe someone at Joey's Club might know something about that word.",Clues.UseActionType.OPENLOCATION),
+                    "this has the word \"Glorgan\" written on the back of it. could be a password of some sort. maybe someone at Joey's Club might know something about that word. one thing's for sure, this girl hung out with a bda crowd. " +
+                    "\n\n{Gambler's Den Unlocked}",Clues.UseActionType.OPENLOCATION),
                     new Clues(1002, "Employee ID card",0,"an employee ID card from the Teleshift Industries factory",10,
-                    "this doesn't help much, maybe I should check out the TeleShift factory",Clues.UseActionType.OPENLOCATION),
+                    "One of these thugs works at the TeleShift Factory. it might just be a coincidence, but in my line of work, " +
+                    "there ar no coincednces. \n\n{TeleShift Factory Unlocked}",Clues.UseActionType.OPENLOCATION),
                     new Clues(1003, "TeleShift Device",3000,"a super new device used to teleport. many people are skeptical.",40,
-                    "you try out the TeleShift to go home but it takes you to Xoranto",Clues.UseActionType.MOVEPLAYER)
+                    "the TeleShift device I found seemed to have malfunctioned and took me here and immediatly met by the xantorian supervisor to work in the mines. Look there are the missing people!",Clues.UseActionType.MOVEPLAYER)
 
 
 

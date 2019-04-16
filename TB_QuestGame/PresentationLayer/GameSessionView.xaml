@@ -115,7 +115,9 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Margin="0,0,0,35"
-                    Style="{StaticResource BorderStyle}"/>
+                    Style="{StaticResource BorderStyle}">
+                    <Image HorizontalAlignment="Left" Height="137" Margin="9,201,0,0" VerticalAlignment="Top" Width="183"/>
+                </Border>
                 <Border
                     Grid.Row="0"
                     Grid.Column="1"
@@ -130,7 +132,7 @@
                         <TextBox x:Name="TxtBx_Message"
                                      Style="{StaticResource MainPanelTextBoxStyle}"
                                      Height="153" Width="Auto"
-                                     Text="{Binding MessageDisplay, Mode=OneWay}"
+                                     Text="{Binding CurrentLocationInformation, Mode=OneWay}"
                                      Margin="47,32,40,159"
                                  TextWrapping="Wrap"
                                      />
@@ -277,7 +279,7 @@
                 <Image Source="{Binding CurrentLocation.ImageFilePath}" Grid.Column="1"  Margin="420,163,0,35" Grid.ColumnSpan="2"/>
             </Grid>
         </Border>
-        <DataGrid Margin="25,22,668,343" 
+        <DataGrid Margin="25,22,668,356" 
             x:Name="InventoryDataGrid"
                             ItemsSource="{Binding Player.Inventory}"
                             SelectedItem="{Binding CurrentGameItem}"

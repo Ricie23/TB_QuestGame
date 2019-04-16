@@ -219,23 +219,23 @@ namespace TB_QuestGame.Models
 
             return message;
         }
-        //public string MovePlayerFromClue(int clueID)
-        //{
-        //    string message = "the devices transports you.";
-        //    Location mapLocation = new Location();
-        //    for (int row =0; row < _maxRows; row++)
-        //    {
-        //        for (int column = 0; column < _maxColumns; column++)
-        //        {
-        //            mapLocation = _mapLocations[row, column];
-        //            if (mapLocation != null && mapLocation.RequiredClueId == clueID)
-        //            {
-        //                CurrentLocationCoordinates=_mapLocations[3,4]
-        //            }
-        //        }
+        public Location MovePlayerFromClue(int clueID) 
+        {
+            Location mapLocation = new Location();
+            for (int row = 0; row < _maxRows; row++)
+            {
+                for (int column = 0; column < _maxColumns; column++)
+                {
+                    mapLocation = _mapLocations[row, column];
+                    if (mapLocation != null && mapLocation.RequiredClueId == clueID)
+                    {
+                        mapLocation = _mapLocations[2, 3];
+                    };
+                }
 
-        //    }
-       // }
+            }
+            return mapLocation;
+        }
         #endregion
     }
 }
