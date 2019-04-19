@@ -15,7 +15,7 @@ namespace TB_QuestGame.Models
         public string Description { get; set; }
         public int ExperiencePoints { get; set; }
         public string UseMessage { get; set; }
-     
+     public GameItem GameItems { get; set; }
 
 
         public string Information
@@ -26,7 +26,7 @@ namespace TB_QuestGame.Models
             }
         }
 
-        public GameItem(int id, string name, int value, string description, int experiencePoints, string useMessage = "")
+        public GameItem(int id, string name, int value, string description, int experiencePoints, string useMessage = "" )
         {
             Id = id;
             Name = name;
@@ -34,7 +34,7 @@ namespace TB_QuestGame.Models
             Description = description;
             ExperiencePoints = experiencePoints;
             UseMessage = useMessage;
-      
+                
         }
 
         public virtual string InformationString()

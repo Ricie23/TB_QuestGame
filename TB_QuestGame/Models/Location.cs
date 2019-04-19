@@ -24,12 +24,17 @@ namespace TB_QuestGame.Models
         private string _imageFileName;
         private int _requiredClueId;
         private ObservableCollection<GameItem> _gameItems;
-
+        private ObservableCollection<NPC> _npcs;
 
 
 
         #endregion
         #region PROPERTIES
+        public ObservableCollection<NPC> Npcs
+        {
+            get { return _npcs; }
+            set { _npcs = value; }
+        }
 
         public ObservableCollection<GameItem> GameItems
         {

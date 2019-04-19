@@ -22,6 +22,8 @@ namespace TB_QuestGame.PresentationLayer
         private Location _northLocation, _eastLocation, _southLocation, _westLocation;
         private GameItem _currentGameItem;
         private string _currentLocationInformation;
+        protected Random random = new Random();
+        private NPC _currentNpc;
 
         #endregion
 
@@ -29,9 +31,26 @@ namespace TB_QuestGame.PresentationLayer
         public GameItem CurrentGameItem
         {
             get { return _currentGameItem; }
-            set { _currentGameItem = value; }
+            set {
+                _currentGameItem = value;
+                OnPropertyChanged(nameof(CurrentGameItem));
+                if (_currentGameItem != null && _currentGameItem.GameItems is Weapon)
+                {
+                    _player.CurrentWeapon = _currentGameItem.GameItems as Weapon;
+                }
+            }
+
         }
 
+        public NPC CurrentNpc
+        {
+            get { return _currentNpc; }
+            set
+            {
+                _currentNpc = value;
+                OnPropertyChanged(nameof(CurrentNpc));
+            }
+        }
 
         public Player Player
         {
@@ -44,6 +63,7 @@ namespace TB_QuestGame.PresentationLayer
             get { return _currentLocation.Message; }
         }
 
+     
         public Map GameMap
         {
             get { return _gameMap; }
@@ -329,9 +349,17 @@ namespace TB_QuestGame.PresentationLayer
         {
             _player.Wealth -= gameItem.Value;
         }
- 
 
-    public void OnUseGameItem()
+        public void OnPlayerTalkTo()
+        {
+            if (CurrentNpc != null && CurrentNpc is ISpeak)
+            {
+                ISpeak speakingNpc = CurrentNpc as ISpeak;
+                CurrentLocationInformation = speakingNpc.Speak();
+            }
+        }
+
+        public void OnUseGameItem()
     {
         switch (_currentGameItem)
         {
@@ -398,15 +426,153 @@ namespace TB_QuestGame.PresentationLayer
             Environment.Exit(0);
         }
 
-        /// <summary>
-        /// player chooses to reset game
-        /// </summary>
+ 
         private void ResetPlayer()
         {
             Environment.Exit(0);
         }
+
+        private BattleModeName NpcBattleResponse()
+        {
+            BattleModeName npcBattleResponse = BattleModeName.RETREAT;
+
+            switch (DieRoll(3))
+            {
+                case 1:
+                    npcBattleResponse = BattleModeName.ATTACK;
+                    break;
+                case 2:
+                    npcBattleResponse = BattleModeName.DEFEND;
+                    break;
+                case 3:
+                    npcBattleResponse = BattleModeName.RETREAT;
+                    break;
+            }
+            return npcBattleResponse;
+        }
+
+        private int CalculatePlayerHitPoints()
+        {
+            int playerHitPoints = 0;
+
+            switch (_player.BattleMode)
+            {
+                case BattleModeName.ATTACK:
+                    playerHitPoints = _player.Attack();
+                    break;
+                case BattleModeName.DEFEND:
+                    playerHitPoints = _player.Defend();
+                    break;
+                case BattleModeName.RETREAT:
+                    playerHitPoints = _player.Retreat();
+                    break;
+            }
+
+            return playerHitPoints;
+        }
+
+        private int CalculateNpcHitPoints(IBattle battleNpc)
+        {
+            int battleNpcHitPoints = 0;
+
+            switch (NpcBattleResponse())
+            {
+                case BattleModeName.ATTACK:
+                    battleNpcHitPoints = battleNpc.Attack();
+                    break;
+                case BattleModeName.DEFEND:
+                    battleNpcHitPoints = battleNpc.Defend();
+                    break;
+                case BattleModeName.RETREAT:
+                    battleNpcHitPoints = battleNpc.Retreat();
+                    break;
+            }
+return battleNpcHitPoints;
+        }
+
+        private void Battle()
+        {
+            
+            if (_currentNpc is IBattle)
+            {
+                IBattle battleNpc = _currentNpc as IBattle;
+                int playerHitPoints = 0;
+                int battleNpcHitPoints = 0;
+                string battleInformation = "";
+
+              
+                if (_player.CurrentWeapon != null)
+                {
+                    playerHitPoints = CalculatePlayerHitPoints();
+                }
+                else
+                {
+                    battleInformation = "It appears you are entering into battle without a weapon." + Environment.NewLine;
+                }
+
+                if (battleNpc.CurrentWeapon != null)
+                {
+                    battleNpcHitPoints = CalculateNpcHitPoints(battleNpc);
+                }
+                else
+                {
+                    battleInformation = $"It appears you are entering into battle with {_currentNpc.Name} who has no weapon." + Environment.NewLine;
+                }
+
+         
+                battleInformation +=
+                    $"Player: {_player.BattleMode}     Hit Points: {playerHitPoints}" + Environment.NewLine +
+                    $"NPC: {battleNpc.BattleMode}     Hit Points: {battleNpcHitPoints}" + Environment.NewLine;
+
+             
+                if (playerHitPoints >= battleNpcHitPoints)
+                {
+                    battleInformation += $"You have slain {_currentNpc.Name}.";
+                    _currentLocation.Npcs.Remove(_currentNpc);
+                }
+                else
+                {
+                    battleInformation += $"You have been slain by {_currentNpc.Name}.";
+                    _player.Lives--;
+                }
+
+                CurrentLocationInformation = battleInformation;
+                if (_player.Lives <= 0) OnPlayerDies("You have been slain and have no lives left.");
+            }
+            else
+            {
+                CurrentLocationInformation = "The current NPC will is not battle ready. Seems you are a bit jumpy and your experience suffers.";
+                _player.ExpierencePoints -= 10;
+            }
+
+        }
+
+        public void OnPlayerAttack()
+        {
+            _player.BattleMode = BattleModeName.ATTACK;
+            Battle();
+        }
+
+        public void OnPlayerDefend()
+        {
+            _player.BattleMode = BattleModeName.DEFEND;
+            Battle();
+        }
+
+        public void OnPlayerRetreat()
+        {
+            _player.BattleMode = BattleModeName.RETREAT;
+            Battle();
+        }
         #endregion
 
+        #region HELPER METHODS
+
+        private int DieRoll(int sides)
+        {
+            return random.Next(1, sides + 1);
+        }
+        #endregion
 
         #region EVENTS
 

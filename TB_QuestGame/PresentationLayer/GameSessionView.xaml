@@ -131,11 +131,20 @@
                             Margin="0"/>
                         <TextBox x:Name="TxtBx_Message"
                                      Style="{StaticResource MainPanelTextBoxStyle}"
-                                     Height="153" Width="Auto"
+                                     Height="162" Width="Auto"
                                      Text="{Binding CurrentLocationInformation, Mode=OneWay}"
-                                     Margin="47,32,40,159"
-                                 TextWrapping="Wrap"
-                                     />
+                                     Margin="10,10,21,172"
+                                 TextWrapping="Wrap" RenderTransformOrigin="0.5,0.5"
+                                     >
+                            <TextBox.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform AngleY="0.306"/>
+                                    <RotateTransform/>
+                                    <TranslateTransform Y="0.995"/>
+                                </TransformGroup>
+                            </TextBox.RenderTransform>
+                        </TextBox>
                     </Grid>
                 </Border>
                 <Border
@@ -209,15 +218,27 @@
                         </Grid.ColumnDefinitions>
                         <Button Content="Pick Up" HorizontalAlignment="Left"
                                 Style="{StaticResource MainPanelButtonStyle}"
-                                Margin="0,10,0,0" VerticalAlignment="Top" Width="92" Click="PickUpButton_Click"
+                                Margin="0,10,0,0" VerticalAlignment="Top" Width="185" Click="PickUpButton_Click" Grid.ColumnSpan="2"
                                 />
                         <Button Content="Put Down" HorizontalAlignment="Left" 
                                Style="{StaticResource MainPanelButtonStyle}"
-                                Click="PutDownButton_Click" Margin="0,10,0,0" VerticalAlignment="Top" Width="93" Grid.Column="2"/>
-                        <Button Content="Use Item" Grid.Column="1" HorizontalAlignment="Left"
+                                Click="PutDownButton_Click" Margin="-1,95,0,0" VerticalAlignment="Top" Width="185" Grid.ColumnSpan="2"/>
+                        <Button Content="Use Item" HorizontalAlignment="Left"
                                 Style="{StaticResource MainPanelButtonStyle}"
                                 Click="UseButton_Click"
-                                Margin="10,10,0,0" VerticalAlignment="Top" Width="185"/>
+                                Margin="-1,51,0,0" VerticalAlignment="Top" Width="185" Grid.ColumnSpan="2"/>
+                        <Button Content="Attack" Style="{StaticResource MainPanelButtonStyle}" 
+                                Grid.Column="1" HorizontalAlignment="Left" Margin="123,51,0,0"
+                                Click="AttackButton_Click"
+                                VerticalAlignment="Top" Width="185" Grid.ColumnSpan="2"/>
+                        <Button Grid.ColumnSpan="2" Content="Speak to" Style="{StaticResource MainPanelButtonStyle}"
+                             Grid.Column="1"
+                                Click="SpeakToButton_Click"
+                                HorizontalAlignment="Left" Margin="123,10,0,0" VerticalAlignment="Top" Width="185"/>
+                        <Button Content="Defend" Style="{StaticResource MainPanelButtonStyle}" 
+                                Grid.Column="1" HorizontalAlignment="Left" Margin="123,95,0,0" 
+                                Click="DefendButton_Click"
+                                VerticalAlignment="Top" Width="185" Grid.ColumnSpan="2"/>
 
 
 
@@ -295,26 +316,66 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <DataGrid 
-        x:Name="LocationItemsDataGrid"
-        ItemsSource="{Binding CurrentLocation.GameItems}" 
-       SelectedItem="{Binding CurrentGameItem}"
-         AutoGenerateColumns="False"
-       HeadersVisibility="Column" Margin="299,219,288,206">
-            <DataGrid.Columns>
-                <DataGridTextColumn 
-           Header="Items Description" 
-         IsReadOnly="True"                 
-      Binding="{Binding Information, Mode=OneWay}"
-       Width="*">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style>
-                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+
+        <TabControl 
+      x:Name="LocationInfoTabControl" Margin="250,197,248,193">
+            <TabItem Header="Items"
+        x:Name="ItemsInfoTabItem">
+                <DataGrid 
+          x:Name="LocationItemsDataGrid"
+           Height="158"
+          ItemsSource="{Binding CurrentLocation.GameItems}" 
+          SelectedItem="{Binding CurrentGameItem}"
+           AutoGenerateColumns="False"
+          HeadersVisibility="Column" Margin="0,-3,-1,-4" VerticalAlignment="Bottom">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn 
+                       Header="Description" 
+                     IsReadOnly="True"                 
+                    Binding="{Binding Information, Mode=OneWay}"
+                      Width="*">
+              <DataGridTextColumn.ElementStyle>
+                  <Style>
+             <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                 </Style>
+              </DataGridTextColumn.ElementStyle>
+                 </DataGridTextColumn>
+                  <DataGridTextColumn 
+                    Header="Value"
+                      IsReadOnly="True"
+                     Width="Auto"
+                    Binding="{Binding Value, Mode=OneWay}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="NPCs"
+          x:Name="NpcsInfoTabItem">
+                <DataGrid 
+            x:Name="LocationNpcsDataGrid"
+             Height="150"
+            ItemsSource="{Binding CurrentLocation.Npcs}" 
+         SelectedItem="{Binding CurrentNpc}"
+           AutoGenerateColumns="False"
+        HeadersVisibility="Column">
+          <DataGrid.Columns>
+            <DataGridTextColumn 
+          Header="Description" 
+          IsReadOnly="True"                 
+          Binding="{Binding Information, Mode=OneWay}"
+          Width="*">
+         <DataGridTextColumn.ElementStyle>
+          <Style>
+          <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+           </Style>
+            </DataGridTextColumn.ElementStyle>
+             </DataGridTextColumn>
+           </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+
+        </TabControl>
     </Grid>
 </Window>
 

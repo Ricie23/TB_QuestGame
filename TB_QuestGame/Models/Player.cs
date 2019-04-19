@@ -8,13 +8,16 @@ using System.Collections.ObjectModel;
 
 namespace TB_QuestGame.Models
 {
-    public class Player : Character
+    public class Player : Character, IBattle
     {
         #region ENUMS
 
         #endregion
 
         #region FIELDS
+        private const int DEFENDER_DAMAGE_ADJUSTMENT = 10;
+        private const int MAXIMUM_RETREAT_DAMAGE = 10;
+       
 
         private int _health;
         private int _lives;
@@ -28,11 +31,32 @@ namespace TB_QuestGame.Models
         private ObservableCollection<GameItem> _currency;
         private ObservableCollection<GameItem> _weapons;
         private ObservableCollection<GameItem> _clues;
+        private int _skillLevel;
+        private Weapon _currentWeapon;
+        private BattleModeName _battleMode;
 
         #endregion
 
         #region PROPERTIES
-     public int Wealth
+        public int SkillLevel
+        {
+            get { return _skillLevel; }
+            set { _skillLevel = value; }
+        }
+
+        public Weapon CurrentWeapon
+        {
+            get { return _currentWeapon; }
+            set { _currentWeapon = value; }
+        }
+
+        public BattleModeName BattleMode
+        {
+            get { return _battleMode; }
+            set { _battleMode = value; }
+        }
+
+        public int Wealth
         {
             get { return _wealth; }
             set { _wealth = value; }
@@ -183,5 +207,52 @@ namespace TB_QuestGame.Models
 
         #endregion
 
+        #region BATTLE METHODS
+        public int Attack()
+        {
+            int hitPoints = random.Next(CurrentWeapon.MinimumDamage, CurrentWeapon.MaximumDamage) * _skillLevel;
+
+            if (hitPoints <= 100)
+            {
+                return hitPoints;
+            }
+            else
+            {
+                return 100;
+            }
+        }
+
+        public int Defend()
+        {
+            int hitPoints = (random.Next(CurrentWeapon.MinimumDamage, CurrentWeapon.MaximumDamage) * _skillLevel) - DEFENDER_DAMAGE_ADJUSTMENT;
+
+            if (hitPoints >= 0 && hitPoints <= 100)
+            {
+                return hitPoints;
+            }
+            else if (hitPoints > 100)
+            {
+                return 100;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public int Retreat()
+        {
+            int hitPoints = _skillLevel * MAXIMUM_RETREAT_DAMAGE;
+
+            if (hitPoints <= 100)
+            {
+                return hitPoints;
+            }
+            else
+            {
+                return 100;
+            }
+        }
+        #endregion
     }
 }

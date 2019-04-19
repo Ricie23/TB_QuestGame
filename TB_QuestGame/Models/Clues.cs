@@ -29,5 +29,7 @@ namespace TB_QuestGame.Models
         {
             return $"{Name}: {Description}\nValue: {Value}";
         }
+
+        
     }
 }

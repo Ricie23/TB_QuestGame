@@ -23,6 +23,8 @@ namespace TB_QuestGame.Models
         protected int _locationid;
         protected int _age;
         protected RaceType _race;
+
+        protected Random random = new Random();
         #endregion 
 
         #region PROPERTIES

@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace TB_QuestGame.Models
 {
- 
-        interface ISpeak
-        {
-            List<string> Messages { get; set; }
-
-            string Speak();
-        }
-    
+    public enum BattleModeName
+    {
+        ATTACK,
+        DEFEND,
+        RETREAT,
+        INTERROGATE
+    }
 }

@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace TB_QuestGame.Models
 {
-    public interface Ibattle
+    public interface IBattle
     {
+        int SkillLevel { get; set; }
+        Weapon CurrentWeapon { get; set; }
+        BattleModeName BattleMode { get; set; }
 
+       
+        int Attack();
+        int Defend();
+        int Retreat();
+     
     }
 }

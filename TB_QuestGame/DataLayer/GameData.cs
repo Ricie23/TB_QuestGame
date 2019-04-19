@@ -21,7 +21,8 @@ namespace TB_QuestGame.DataLayer
                 ExpierencePoints = 10,
                 Lives = 2,
                 Health = 100,
-                  Inventory = new ObservableCollection<GameItem>()
+                SkillLevel = 5,
+                Inventory = new ObservableCollection<GameItem>()
                 {
                     GameItemById(2001),
                     GameItemById(2003),
@@ -46,6 +47,11 @@ namespace TB_QuestGame.DataLayer
         private static GameItem GameItemById(int id)
         {
             return StandardGameItems().FirstOrDefault(i => i.Id == id);
+        }
+
+        private static NPC NpcById(int id)
+        {
+            return Npcs().FirstOrDefault(i => i.Id == id);
         }
 
         public static GameMapCoordinates InitialGameMapLocation()
@@ -77,7 +83,11 @@ namespace TB_QuestGame.DataLayer
                     {
                         GameItemById(3001),
                         GameItemById(3002)
-                    }
+                    },
+                Npcs = new ObservableCollection<NPC>()
+                {
+                    NpcById(1001),
+                }
                 };
 
                 gameMap.MapLocations[1, 1] = new Location()
@@ -180,9 +190,9 @@ namespace TB_QuestGame.DataLayer
         }
 
         public static List<GameItem> StandardGameItems()
-            {
+        {
 
-                return new List<GameItem>()
+            return new List<GameItem>()
                 {
                     new Weapon(2001, "Colt .8 snubnose blaster", 600, 1,12,6, "a laser blaster created to look like a classic snubnose revolver.",0),
                     new Weapon (2002, "phaseball bat", 15, 1,6,0,"the bat used for a traditional all-american sport.",0),
@@ -203,11 +213,58 @@ namespace TB_QuestGame.DataLayer
 
 
                 };
+        }
+            public static List<NPC> Npcs()
+            {
+                return new List<NPC>()
+            {
+                new Foe()
+                {
+                    Id = 2001,
+                    Name = "Sargent Aimes",
+                    Race = Character.RaceType.Human,
+                    Description = "A short, stocky man who had a strong look of determination and a disposition to match.",
+                    Messages = new List<string>()
+                    {
+                        "Stop and state your purpose.",
+                        "I have been ordered to kill all who enter.",
+                        "Leave now or bear the consequences."
+                    },
+                   SkillLevel = 3,
+                   CurrentWeapon = GameItemById(1001) as Weapon
+                },
+
+                new Friend()
+                {
+                    Id = 1001,
+                    Name = "Sonia Smith",
+                    Race = Character.RaceType.Human,
+                    Description = "A tall women of respectable stature.",
+                    Messages = new List<string>()
+                    {
+                        "Hello, my name is Ms Smith. I noticed you when you arrived.",
+                        "Excuse me, but are you looking for something."
+                    }
+                },
+
+                new Friend()
+                {
+                    Id = 1002,
+                    Name = "Xantipple Ford",
+                    Race = Character.RaceType.Android,
+                    Description = "A tall women of respectable stature.",
+                    Messages = new List<string>()
+                    {
+                        "Excuse me, but my kind does not speak with your kind."
+                    }
+                }
+            };
             }
+        }
 
 
 
 
 
     }
-}
+
