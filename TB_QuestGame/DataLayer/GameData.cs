@@ -86,7 +86,8 @@ namespace TB_QuestGame.DataLayer
                     },
                 Npcs = new ObservableCollection<NPC>()
                 {
-                    NpcById(1001),
+                    NpcById(5010),
+                    NpcById(5003)
                 }
                 };
 
@@ -99,7 +100,11 @@ namespace TB_QuestGame.DataLayer
                     ModifiyExperiencePoints = 10,
                     Message = "This city is gettin' too dang big. what happened to the good ol days when taxis actually had drivers and people were nice to each other? the address Lori's sister gave me is on the east side of town." +
                     "but maybe Joey might know somethin. seeins how he knows everybody.",
-                    ImageFileName = "cyberpunk-street.png"
+                    ImageFileName = "cyberpunk-street.png",
+                    GameItems = new ObservableCollection<GameItem>
+                    {
+                        GameItemById(2002)
+                    },
 
                 };
 
@@ -114,9 +119,12 @@ namespace TB_QuestGame.DataLayer
                     ImageFileName = "bar.gif",
                     GameItems= new ObservableCollection<GameItem>
                     {
-                        GameItemById(3003),
-                        GameItemById(2002)
-                    }
+                        GameItemById(3003)
+                    },
+                      Npcs = new ObservableCollection<NPC>()
+                {
+                    NpcById(5020),
+                }
 
                 };
 
@@ -132,9 +140,11 @@ namespace TB_QuestGame.DataLayer
                     Message = "They Jumped me! I wasn't ready for that but boy I'm ready now.",
                     ImageFileName = "gambler.jpg",
                     RequiredClueId=1001,
-                       GameItems = new ObservableCollection<GameItem>
+                
+                         Npcs = new ObservableCollection<NPC>()
                 {
-                   GameItemById(1002)
+                    NpcById(5001),
+                    NpcById(5003)
                 }
 
 
@@ -168,20 +178,30 @@ namespace TB_QuestGame.DataLayer
                        GameItems = new ObservableCollection<GameItem>
                 {
                     GameItemById(1003)
+                },
+                         Npcs = new ObservableCollection<NPC>()
+                {
+                    NpcById(5002),
                 }
 
                 };
                 gameMap.MapLocations[2, 3] = new Location()
                 {
                     Id = 6,
-                    Name = "Xorantian Mines",
-                    Description = "the planet Xoranto is not an ideal vacation place. it is rich with plantinium which is used for just about everything.",
+                    Name = "Galorian Mines",
+                    Description = "the planet Galoria is not an ideal vacation place. it is rich with plantinium which is used for just about everything.",
                     Accessible = false,
                     ModifiyExperiencePoints = 60,
-                    Message = "the TeleShift device I found seemed to have malfunctioned and took me here and immediatly met by the xantorian supervisor to work in the mines. Look there are the missing people!",
+                    Message = "the TeleShift device I found seemed to have malfunctioned and took me here and immediatly met by the Galorian supervisor to work in the mines. Look there are the missing people!",
                     ImageFileName = "mines.jpg",
-                    RequiredClueId=1003  
+                    RequiredClueId=1003,
+                      Npcs = new ObservableCollection<NPC>()
+                {
+                    NpcById(5004),
+                    NpcById(5030)
+                }
                 };
+
 
                 return gameMap;
             };
@@ -214,52 +234,125 @@ namespace TB_QuestGame.DataLayer
 
                 };
         }
-            public static List<NPC> Npcs()
-            {
-                return new List<NPC>()
+        public static List<NPC> Npcs()
+        {
+            return new List<NPC>()
             {
                 new Foe()
                 {
-                    Id = 2001,
-                    Name = "Sargent Aimes",
+                    Id = 5001,
+                    Name = "Gambler Thug 1",
                     Race = Character.RaceType.Human,
-                    Description = "A short, stocky man who had a strong look of determination and a disposition to match.",
+                    Health = 25,
+                    Description = "A no-good rough and tough thug.",
                     Messages = new List<string>()
                     {
-                        "Stop and state your purpose.",
-                        "I have been ordered to kill all who enter.",
-                        "Leave now or bear the consequences."
+                        "you stepped into the wrong turf grandpa.",
+                        "You ain't leavin without a fight.",
+                        "come on old man. put them dukes up."
                     },
-                   SkillLevel = 3,
-                   CurrentWeapon = GameItemById(1001) as Weapon
+                   SkillLevel = 1,
+                   CurrentWeapon = GameItemById(2003) as Weapon
                 },
-
-                new Friend()
+                                new Foe()
                 {
-                    Id = 1001,
-                    Name = "Sonia Smith",
+                    Id = 5002,
+                    Name = "Gambler Thug 2",
+                    Health = 25,
                     Race = Character.RaceType.Human,
-                    Description = "A tall women of respectable stature.",
+                    Description = "A no-good rough and tough thug.",
                     Messages = new List<string>()
                     {
-                        "Hello, my name is Ms Smith. I noticed you when you arrived.",
-                        "Excuse me, but are you looking for something."
+                        "you stepped into the wrong turf grandpa.",
+                        "You ain't leavin without a fight.",
+                        "come on old man. put them dukes up."
+                    },
+                   SkillLevel = 1,
+                   CurrentWeapon = GameItemById(2003) as Weapon
+                },
+                new Foe()
+                {
+                    Id=5003,
+                    Name = "Bobby Toloppi",
+                    Health=50,
+                    Race = Character.RaceType.Galorian,
+                    Description = "this guy means business. seems to be the leader of the pack.",
+                    Messages = new List<string>()
+                    {
+                        "I ain't tellin you nothin.",
+                        "the investagation stops here bub.",
+
+                    },
+                    SkillLevel=3,
+                    CurrentWeapon= GameItemById(2002) as Weapon,
+                    Loot= GameItemById(1002),
+                    
+
+                },
+                new Foe()
+                {
+                    Id=5004,
+                    Name="the Boss",
+                    Health=75,
+                  
+             
+                    Race = Character.RaceType.Galorian,
+                    Description="He's the brains behind this whole operation.",
+                    Messages = new List<string>()
+                    {
+                        "bring it.",
+                        "you can't stop me! I'm too Powerful!",
+                        "Quit talking and starting fighting! I'm not gonna give you an evil monologue!"
+                       
+                    },
+                    SkillLevel=3,
+                    CurrentWeapon = GameItemById(2002) as Weapon
+                },
+
+                new Friend()
+                {
+                    Id = 5010,
+                    Name = "Veronicka Florentine",
+                    Race = Character.RaceType.Human,
+                    Description = "A small sized young women who seems upset and unsure",
+                    Messages = new List<string>()
+                    {
+                        "My sister Lori went missing yesterday. the police won't do anything. she just bought a new TeleShift device to transport to work and never showed up.",
+                        "Please Mister, You're my only hope.",
+                        "I'll pay you hansomely.",
+                        "Her apartment is on the east side of town."
                     }
                 },
 
                 new Friend()
                 {
-                    Id = 1002,
-                    Name = "Xantipple Ford",
+                    Id = 5020,
+                    Name = "Joey",
                     Race = Character.RaceType.Android,
-                    Description = "A tall women of respectable stature.",
+                    Description = "a great bartender and a greater informer. he's been my go to guy for as long as I can remember",
                     Messages = new List<string>()
                     {
-                        "Excuse me, but my kind does not speak with your kind."
+                        "hey bud. try not to start no toruble tonight alright?",
+                        "what you wanna drink or somethin?",
+                        "yea I think I remember that girl. she used to come in here and just order milk."
                     }
+                },
+
+                new Friend()
+                {
+                   Id=5030,
+                   Name="Lori Florentine",
+                   Race = Character.RaceType.Human,
+                   Description = "a beuatiful women who seems like she doesn't belong in this place.",
+                   Messages = new List<string>()
+                   {
+                       "I can't belive you found me mister!",
+                       "Please help mister!",
+                       "Gee thanks mister."
+                   }
                 }
             };
-            }
+        }
         }
 
 

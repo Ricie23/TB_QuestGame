@@ -369,10 +369,21 @@ namespace TB_QuestGame.PresentationLayer
             case Clues clues:
                 ProcessClueUse(clues);
                 break;
+                case Weapon weapon:
+                    ProcessWeaponUse(weapon);
+                    break;
             default:
                 break;
         }
     }
+
+        private void ProcessWeaponUse(Weapon weapon)
+        {
+            if (_currentGameItem != null && _currentGameItem is Weapon)
+            {
+                _player.CurrentWeapon = _currentGameItem as Weapon;
+            }
+        }
 
         private void ProcessClueUse(Clues clues)
         {
@@ -421,6 +432,7 @@ namespace TB_QuestGame.PresentationLayer
                     break;
             }
         }
+
         private void QuiteApplication()
         {
             Environment.Exit(0);
@@ -459,35 +471,46 @@ namespace TB_QuestGame.PresentationLayer
             {
                 case BattleModeName.ATTACK:
                     playerHitPoints = _player.Attack();
+                  
                     break;
                 case BattleModeName.DEFEND:
                     playerHitPoints = _player.Defend();
+                 
                     break;
                 case BattleModeName.RETREAT:
                     playerHitPoints = _player.Retreat();
                     break;
+                   
             }
-
+            
             return playerHitPoints;
         }
 
         private int CalculateNpcHitPoints(IBattle battleNpc)
-        {
-            int battleNpcHitPoints = 0;
-
-            switch (NpcBattleResponse())
+        { int battleNpcHitPoints = 0;
+            if (battleNpc is Foe /*playerHitPoints >= battleNpcHitPoints*/)
             {
-                case BattleModeName.ATTACK:
-                    battleNpcHitPoints = battleNpc.Attack();
-                    break;
-                case BattleModeName.DEFEND:
-                    battleNpcHitPoints = battleNpc.Defend();
-                    break;
-                case BattleModeName.RETREAT:
-                    battleNpcHitPoints = battleNpc.Retreat();
-                    break;
+                Foe battlingNpc = _currentNpc as Foe;
+               
+
+                switch (NpcBattleResponse())
+                {
+                    case BattleModeName.ATTACK:
+                        battleNpcHitPoints = battleNpc.Attack();
+                      
+                        break;
+                    case BattleModeName.DEFEND:
+                        battleNpcHitPoints = battleNpc.Defend();
+                     
+                        break;
+                    case BattleModeName.RETREAT:
+                        battleNpcHitPoints = battleNpc.Retreat();
+                        break;
+                }
+               
             }
-return battleNpcHitPoints;
+           return battleNpcHitPoints;
+   
         }
 
         private void Battle()
@@ -499,49 +522,77 @@ return battleNpcHitPoints;
                 int playerHitPoints = 0;
                 int battleNpcHitPoints = 0;
                 string battleInformation = "";
-
+                 if (battleNpc is Foe /*playerHitPoints >= battleNpcHitPoints*/)
+                {  
               
                 if (_player.CurrentWeapon != null)
                 {
-                    playerHitPoints = CalculatePlayerHitPoints();
+                   playerHitPoints = CalculatePlayerHitPoints();
+                   
+                    battleInformation = $"you are using {_player.CurrentWeapon} as your weapon." + Environment.NewLine;
                 }
                 else
                 {
+                    playerHitPoints = 2;
                     battleInformation = "It appears you are entering into battle without a weapon." + Environment.NewLine;
+
                 }
+
+  
+                    Foe battlingNpc = _currentNpc as Foe;
+                   
 
                 if (battleNpc.CurrentWeapon != null)
                 {
                     battleNpcHitPoints = CalculateNpcHitPoints(battleNpc);
+                        
+                      
                 }
                 else
                 {
                     battleInformation = $"It appears you are entering into battle with {_currentNpc.Name} who has no weapon." + Environment.NewLine;
                 }
 
-         
-                battleInformation +=
-                    $"Player: {_player.BattleMode}     Hit Points: {playerHitPoints}" + Environment.NewLine +
-                    $"NPC: {battleNpc.BattleMode}     Hit Points: {battleNpcHitPoints}" + Environment.NewLine;
 
-             
-                if (playerHitPoints >= battleNpcHitPoints)
-                {
-                    battleInformation += $"You have slain {_currentNpc.Name}.";
-                    _currentLocation.Npcs.Remove(_currentNpc);
+                    battleInformation +=
+                        $"Player: {_player.BattleMode}     Hit Points: {playerHitPoints}" + Environment.NewLine +
+                        $"Payer Health: {_player.Health}"+ Environment.NewLine +
+                    $"NPC: {battleNpc.BattleMode}     Hit Points: {battleNpcHitPoints}" + Environment.NewLine+
+                    $"Foe Health: {battlingNpc.Health}";
+
+
+            
+
+ if (battlingNpc.Health <= 0)
+                    {
+
+                        {
+                            battleInformation += $"You have destroyed {_currentNpc.Name}.";
+
+                            if (_currentNpc is Foe)
+                            {
+                                if (battlingNpc.Loot != null)
+                                {
+                                    _player.Inventory.Add(battlingNpc.Loot);
+                                }
+
+                            }
+                            _currentLocation.Npcs.Remove(_currentNpc);
+                        }
+                    }
                 }
-                else
+                else if (_player.Health <= 0)
                 {
-                    battleInformation += $"You have been slain by {_currentNpc.Name}.";
+                    battleInformation += $"You have been killed by {_currentNpc.Name}.";
                     _player.Lives--;
                 }
 
                 CurrentLocationInformation = battleInformation;
-                if (_player.Lives <= 0) OnPlayerDies("You have been slain and have no lives left.");
+                if (_player.Lives <= 0) OnPlayerDies("You have died. Game Over");
             }
             else
             {
-                CurrentLocationInformation = "The current NPC will is not battle ready. Seems you are a bit jumpy and your experience suffers.";
+                CurrentLocationInformation = "Don't hit your Friends! \n{-10 XP}";
                 _player.ExpierencePoints -= 10;
             }
 

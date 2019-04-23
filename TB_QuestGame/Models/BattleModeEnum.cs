@@ -10,7 +10,6 @@ namespace TB_QuestGame.Models
     {
         ATTACK,
         DEFEND,
-        RETREAT,
-        INTERROGATE
+        RETREAT
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Collections.ObjectModel;
 namespace TB_QuestGame.Models
 {
    public class Foe: NPC, ISpeak, IBattle
@@ -17,6 +17,19 @@ namespace TB_QuestGame.Models
         public int SkillLevel { get; set; }
         public BattleModeName BattleMode { get; set; }
         public Weapon CurrentWeapon { get; set; }
+        private int _health;
+        public int MinimumDamage { get; set; }
+        public int MaximumDamage { get; set; }
+        public int RewardExp { get; private set; }
+        public GameItem Loot { get; set; }
+        public int Health
+        {
+            get { return _health ; }
+            set { _health = value;
+                OnPropertyChanged(nameof(Health));
+            }
+        }
+
 
         protected override string InformationText()
         {
@@ -30,17 +43,30 @@ namespace TB_QuestGame.Models
         public Foe(
             int id,
             string name,
+            int health,
             RaceType race,
             List<string> messages,
+            int minimumDamage,
+            int maximumDamage,
             int skillLevel,
+            GameItem loot,
+           int rewardExp,
             Weapon currentWeapon,
-            string description) : base(id, name, race, description)
+        string description) 
+         : base(id, name, race, description)
         {
 
             Messages = messages;
             SkillLevel = skillLevel;
             CurrentWeapon = currentWeapon;
+            Health = health;
+            MinimumDamage = minimumDamage;
+            MaximumDamage = maximumDamage;
+            RewardExp = rewardExp;
+            Loot = loot;
         }
+        
+
         public string Speak()
         {
             if (this.Messages != null)
