@@ -25,7 +25,6 @@ namespace TB_QuestGame.DataLayer
                 Inventory = new ObservableCollection<GameItem>()
                 {
                     GameItemById(2001),
-                    GameItemById(2003),
                     GameItemById(4001)
                 }
 
@@ -86,8 +85,8 @@ namespace TB_QuestGame.DataLayer
                     },
                 Npcs = new ObservableCollection<NPC>()
                 {
-                    NpcById(5010),
-                    NpcById(5003)
+                    NpcById(5010)
+                   
                 }
                 };
 
@@ -136,7 +135,7 @@ namespace TB_QuestGame.DataLayer
                     Accessible = false,
                     RequiredExp = 120,
                     ModifiyExperiencePoints = 20,
-                    ModifyHealth = -25,
+                    ModifyHealth = -20,
                     Message = "They Jumped me! I wasn't ready for that but boy I'm ready now.",
                     ImageFileName = "gambler.jpg",
                     RequiredClueId=1001,
@@ -177,11 +176,12 @@ namespace TB_QuestGame.DataLayer
                     RequiredExp=120,
                        GameItems = new ObservableCollection<GameItem>
                 {
-                    GameItemById(1003)
+                    GameItemById(3001)
                 },
                          Npcs = new ObservableCollection<NPC>()
                 {
                     NpcById(5002),
+                    NpcById(5005)
                 }
 
                 };
@@ -218,11 +218,11 @@ namespace TB_QuestGame.DataLayer
                     new Weapon (2002, "phaseball bat", 15, 1,6,0,"the bat used for a traditional all-american sport.",0),
                     new Weapon(2003, "fists", 0,0,4,0, "good ol' fashion put em up dukes",0),
                     new MediPack(3001, "Vape sticks",10, 10,0,"a pack of disposable vape sticks. comes in a pack of 10.",0),
-                    new MediPack(3002, "glass of scotch",4, 20,0,"a nice smooth glass of scotch.",0),
+                    new MediPack(3002, "glass of scotch",4, 25,0,"a nice smooth glass of scotch.",0),
                     new MediPack(3003, "bottle of scotch", 60,75,1,"a nice bottle of scotch is always a nice bonus.",0),
                     new Currency(4001, "credits",10,Currency.CurrencyType.Credits,"U.S. credits, paper bills are obscolete. pennies are all over the place still.",0),
                     new Clues(1001,"matchbook",0,"a souvenier matchbook replica from Joey's bar. there is a word written on the back. \"glorgan\"",5,
-                    "this has the word \"Glorgan\" written on the back of it. could be a password of some sort. maybe someone at Joey's Club might know something about that word. one thing's for sure, this girl hung out with a bda crowd. " +
+                    "this has the word \"Glorgan\" written on the back of it. could be a password of some sort. maybe someone at Joey's Club might know something about that word. one thing's for sure, this girl hung out with a bad crowd. " +
                     "\n\n{Gambler's Den Unlocked}",Clues.UseActionType.OPENLOCATION),
                     new Clues(1002, "Employee ID card",0,"an employee ID card from the Teleshift Industries factory",10,
                     "One of these thugs works at the TeleShift Factory. it might just be a coincidence, but in my line of work, " +
@@ -241,7 +241,7 @@ namespace TB_QuestGame.DataLayer
                 new Foe()
                 {
                     Id = 5001,
-                    Name = "Gambler Thug 1",
+                    Name = "Gambler Thug",
                     Race = Character.RaceType.Human,
                     Health = 25,
                     Description = "A no-good rough and tough thug.",
@@ -257,18 +257,19 @@ namespace TB_QuestGame.DataLayer
                                 new Foe()
                 {
                     Id = 5002,
-                    Name = "Gambler Thug 2",
+                    Name = "TeleShift Henchman",
                     Health = 25,
                     Race = Character.RaceType.Human,
                     Description = "A no-good rough and tough thug.",
                     Messages = new List<string>()
                     {
-                        "you stepped into the wrong turf grandpa.",
+                       
                         "You ain't leavin without a fight.",
                         "come on old man. put them dukes up."
                     },
                    SkillLevel = 1,
-                   CurrentWeapon = GameItemById(2003) as Weapon
+                   CurrentWeapon = GameItemById(2003) as Weapon,
+                   Loot=GameItemById(3002)
                 },
                 new Foe()
                 {
@@ -305,10 +306,26 @@ namespace TB_QuestGame.DataLayer
                         "Quit talking and starting fighting! I'm not gonna give you an evil monologue!"
                        
                     },
-                    SkillLevel=3,
+                    SkillLevel=4,
                     CurrentWeapon = GameItemById(2002) as Weapon
                 },
-
+                new Foe()
+                {
+                    Id=5005,
+                    Name="Stephen Malarchy",
+                    Health=60,
+                    Race= Character.RaceType.Android,
+                    Description="He seems like he knows a little too much",
+                    Messages = new List<string>()
+                    {
+                        "Just walk away now, and we won't kill ya",
+                        "drop the investigation old man. It's not gonna end well."
+                    },
+                    SkillLevel=3,
+                    CurrentWeapon = GameItemById(2003) as Weapon,
+                    Loot=GameItemById(1003)
+                    
+                },
                 new Friend()
                 {
                     Id = 5010,
@@ -318,7 +335,6 @@ namespace TB_QuestGame.DataLayer
                     Messages = new List<string>()
                     {
                         "My sister Lori went missing yesterday. the police won't do anything. she just bought a new TeleShift device to transport to work and never showed up.",
-                        "Please Mister, You're my only hope.",
                         "I'll pay you hansomely.",
                         "Her apartment is on the east side of town."
                     }
@@ -334,7 +350,7 @@ namespace TB_QuestGame.DataLayer
                     {
                         "hey bud. try not to start no toruble tonight alright?",
                         "what you wanna drink or somethin?",
-                        "yea I think I remember that girl. she used to come in here and just order milk."
+                        "yea I think I remember that girl. she used to come in here and just order milk. I think she lives over on the east side of town."
                     }
                 },
 
@@ -347,8 +363,8 @@ namespace TB_QuestGame.DataLayer
                    Messages = new List<string>()
                    {
                        "I can't belive you found me mister!",
-                       "Please help mister!",
-                       "Gee thanks mister."
+                       "Please help mister!"
+                      
                    }
                 }
             };

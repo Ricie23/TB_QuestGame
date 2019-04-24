@@ -59,9 +59,7 @@ namespace TB_QuestGame.Models
 
         public void MoveNorth()
         {
-            //
-            // not on north border
-            //
+            
             if (_currentLocationCoordinates.Row > 0)
             {
                 _currentLocationCoordinates.Row -= 1;
@@ -70,9 +68,7 @@ namespace TB_QuestGame.Models
 
         public void MoveEast()
         {
-            //
-            // not on east border
-            //
+          
             if (_currentLocationCoordinates.Column < _maxColumns - 1)
             {
                 _currentLocationCoordinates.Column += 1;
@@ -89,9 +85,7 @@ namespace TB_QuestGame.Models
 
         public void MoveWest()
         {
-            //
-            // not on west border
-            //
+            
             if (_currentLocationCoordinates.Column > 0)
             {
                 _currentLocationCoordinates.Column -= 1;
@@ -108,9 +102,7 @@ namespace TB_QuestGame.Models
             {
                 Location nextNorthLocation = _mapLocations[_currentLocationCoordinates.Row - 1, _currentLocationCoordinates.Column];
 
-                //
-                // location exists and player can access location
-                //
+               
                 if (nextNorthLocation != null &&
                     (nextNorthLocation.Accessible == true || nextNorthLocation.IsAccessibleByExperiencePoints(player.ExpierencePoints))) // || nextNorthLocation.isAccessibleByClueid()))
                 {
@@ -126,16 +118,11 @@ namespace TB_QuestGame.Models
         {
             Location eastLocation = null;
 
-            //
-            // not on east border
-            //
+           
             if (_currentLocationCoordinates.Column < _maxColumns - 1)
             {
                 Location nextEastLocation = _mapLocations[_currentLocationCoordinates.Row, _currentLocationCoordinates.Column + 1];
-
-                //
-                // location exists and player can access location
-                //
+                
                 if (nextEastLocation != null &&
                     (nextEastLocation.Accessible == true || nextEastLocation.IsAccessibleByExperiencePoints(player.ExpierencePoints)))
                 {
@@ -151,16 +138,11 @@ namespace TB_QuestGame.Models
         {
             Location southLocation = null;
 
-            //
-            // not on south border
-            //
+           
             if (_currentLocationCoordinates.Row < _maxRows - 1)
             {
                 Location nextSouthLocation = _mapLocations[_currentLocationCoordinates.Row + 1, _currentLocationCoordinates.Column];
 
-                //
-                // location exists and player can access location
-                //
                 if (nextSouthLocation != null &&
                     (nextSouthLocation.Accessible == true || nextSouthLocation.IsAccessibleByExperiencePoints(player.ExpierencePoints)))
                 {
@@ -176,16 +158,12 @@ namespace TB_QuestGame.Models
         {
             Location westLocation = null;
 
-            //
-            // not on west border
-            //
+          
             if (_currentLocationCoordinates.Column > 0)
             {
                 Location nextWestLocation = _mapLocations[_currentLocationCoordinates.Row, _currentLocationCoordinates.Column - 1];
 
-                //
-                // location exists and player can access location
-                //
+             
                 if (nextWestLocation != null &&
                     (nextWestLocation.Accessible == true || nextWestLocation.IsAccessibleByExperiencePoints(player.ExpierencePoints)))
                 {

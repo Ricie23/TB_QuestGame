@@ -31,7 +31,8 @@ namespace TB_QuestGame.PresentationLayer
         public GameItem CurrentGameItem
         {
             get { return _currentGameItem; }
-            set {
+            set
+            {
                 _currentGameItem = value;
                 OnPropertyChanged(nameof(CurrentGameItem));
                 if (_currentGameItem != null && _currentGameItem.GameItems is Weapon)
@@ -63,7 +64,7 @@ namespace TB_QuestGame.PresentationLayer
             get { return _currentLocation.Message; }
         }
 
-     
+
         public Map GameMap
         {
             get { return _gameMap; }
@@ -77,7 +78,7 @@ namespace TB_QuestGame.PresentationLayer
             {
                 _currentLocation = value;
                 OnPropertyChanged(nameof(CurrentLocation));
-                _currentLocationInformation = _currentLocation.Description;
+                _currentLocationInformation = _currentLocation.Message;
                 OnPropertyChanged(nameof(CurrentLocationInformation));
             }
         }
@@ -198,7 +199,7 @@ namespace TB_QuestGame.PresentationLayer
 
         private void UpdateAvailableTravelPoints()
         {
-          
+
             NorthLocation = null;
             EastLocation = null;
             SouthLocation = null;
@@ -227,15 +228,15 @@ namespace TB_QuestGame.PresentationLayer
 
         private void OnPlayerMove()
         {
-           
+
             if (!_player.HasVisited(_currentLocation))
             {
                 _player.LocationsVisited.Add(_currentLocation);
 
-               
+
                 _player.ExpierencePoints += _currentLocation.ModifiyExperiencePoints;
 
-               
+
                 if (_currentLocation.ModifyHealth != 0)
                 {
                     _player.Health += _currentLocation.ModifyHealth;
@@ -246,7 +247,7 @@ namespace TB_QuestGame.PresentationLayer
                     }
                 }
 
-                
+
                 if (_currentLocation.ModifyLives != 0) _player.Lives += _currentLocation.ModifyLives;
 
                 OnPropertyChanged(nameof(MessageDisplay));
@@ -344,7 +345,7 @@ namespace TB_QuestGame.PresentationLayer
             _player.ExpierencePoints += gameItem.ExperiencePoints;
             _player.Wealth += gameItem.Value;
         }
-   
+
         private void OnPlayerPutDown(GameItem gameItem)
         {
             _player.Wealth -= gameItem.Value;
@@ -360,22 +361,22 @@ namespace TB_QuestGame.PresentationLayer
         }
 
         public void OnUseGameItem()
-    {
-        switch (_currentGameItem)
         {
-            case MediPack mediPack:
-                ProcessMediPackUse(mediPack);
-                break;
-            case Clues clues:
-                ProcessClueUse(clues);
-                break;
+            switch (_currentGameItem)
+            {
+                case MediPack mediPack:
+                    ProcessMediPackUse(mediPack);
+                    break;
+                case Clues clues:
+                    ProcessClueUse(clues);
+                    break;
                 case Weapon weapon:
                     ProcessWeaponUse(weapon);
                     break;
-            default:
-                break;
+                default:
+                    break;
+            }
         }
-    }
 
         private void ProcessWeaponUse(Weapon weapon)
         {
@@ -433,15 +434,35 @@ namespace TB_QuestGame.PresentationLayer
             }
         }
 
+        private void OnPlayerWin()
+        {
+            string messagetext = "\n\nCongratulations!! You won! \nWould you like to play again?";
+
+            string titleText = "Victory";
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxResult result = MessageBox.Show(messagetext, titleText, button);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    ResetPlayer();
+                    break;
+                case MessageBoxResult.No:
+                    QuiteApplication();
+                    break;
+            }
+        }
+
         private void QuiteApplication()
         {
             Environment.Exit(0);
         }
 
- 
+
         private void ResetPlayer()
         {
-            Environment.Exit(0);
+            
+            System.Diagnostics.Process.Start(Environment.GetCommandLineArgs()[0]);
+
         }
 
         private BattleModeName NpcBattleResponse()
@@ -471,103 +492,104 @@ namespace TB_QuestGame.PresentationLayer
             {
                 case BattleModeName.ATTACK:
                     playerHitPoints = _player.Attack();
-                  
+
                     break;
                 case BattleModeName.DEFEND:
                     playerHitPoints = _player.Defend();
-                 
+
                     break;
                 case BattleModeName.RETREAT:
                     playerHitPoints = _player.Retreat();
                     break;
-                   
+
             }
-            
+
             return playerHitPoints;
         }
 
         private int CalculateNpcHitPoints(IBattle battleNpc)
-        { int battleNpcHitPoints = 0;
+        {
+            int battleNpcHitPoints = 0;
             if (battleNpc is Foe /*playerHitPoints >= battleNpcHitPoints*/)
             {
                 Foe battlingNpc = _currentNpc as Foe;
-               
+
 
                 switch (NpcBattleResponse())
                 {
                     case BattleModeName.ATTACK:
                         battleNpcHitPoints = battleNpc.Attack();
-                      
+
                         break;
                     case BattleModeName.DEFEND:
                         battleNpcHitPoints = battleNpc.Defend();
-                     
+
                         break;
                     case BattleModeName.RETREAT:
                         battleNpcHitPoints = battleNpc.Retreat();
                         break;
                 }
-               
+
             }
-           return battleNpcHitPoints;
-   
+            return battleNpcHitPoints;
+
         }
 
         private void Battle()
         {
-            
+
             if (_currentNpc is IBattle)
             {
                 IBattle battleNpc = _currentNpc as IBattle;
                 int playerHitPoints = 0;
                 int battleNpcHitPoints = 0;
                 string battleInformation = "";
-                 if (battleNpc is Foe /*playerHitPoints >= battleNpcHitPoints*/)
-                {  
-              
-                if (_player.CurrentWeapon != null)
+                if (battleNpc is Foe)
                 {
-                   playerHitPoints = CalculatePlayerHitPoints();
-                   
-                    battleInformation = $"you are using {_player.CurrentWeapon} as your weapon." + Environment.NewLine;
-                }
-                else
-                {
-                    playerHitPoints = 2;
-                    battleInformation = "It appears you are entering into battle without a weapon." + Environment.NewLine;
 
-                }
-
-  
                     Foe battlingNpc = _currentNpc as Foe;
-                   
+                    if (_player.CurrentWeapon != null)
+                    {
+                        playerHitPoints = CalculatePlayerHitPoints();
+                        battlingNpc.Health -= playerHitPoints;
+                        battleInformation = $"you are using {_player.CurrentWeapon.Name} as your weapon." + Environment.NewLine;
+                    }
+                    else
+                    {
+                        playerHitPoints = 2;
+                        battleInformation = "It appears you are entering into battle without a weapon." + Environment.NewLine;
 
-                if (battleNpc.CurrentWeapon != null)
-                {
-                    battleNpcHitPoints = CalculateNpcHitPoints(battleNpc);
-                        
-                      
-                }
-                else
-                {
-                    battleInformation = $"It appears you are entering into battle with {_currentNpc.Name} who has no weapon." + Environment.NewLine;
-                }
+                    }
+
+
+
+
+                    if (battleNpc.CurrentWeapon != null)
+                    {
+                        battleNpcHitPoints = CalculateNpcHitPoints(battleNpc);
+                        _player.Health -= battleNpcHitPoints;
+
+                    }
+                    else
+                    {
+                        battleInformation = $"It appears you are entering into battle with {_currentNpc.Name} who has no weapon." + Environment.NewLine;
+                    }
 
 
                     battleInformation +=
                         $"Player: {_player.BattleMode}     Hit Points: {playerHitPoints}" + Environment.NewLine +
-                        $"Payer Health: {_player.Health}"+ Environment.NewLine +
-                    $"NPC: {battleNpc.BattleMode}     Hit Points: {battleNpcHitPoints}" + Environment.NewLine+
+                        $"Payer Health: {_player.Health}" + Environment.NewLine +
+                    $"NPC: {battleNpc.BattleMode}     Hit Points: {battleNpcHitPoints}" + Environment.NewLine +
                     $"Foe Health: {battlingNpc.Health}";
 
 
-            
 
- if (battlingNpc.Health <= 0)
+
+                    if (battlingNpc.Health <= 0)
                     {
 
                         {
-                            battleInformation += $"You have destroyed {_currentNpc.Name}.";
+                            battleInformation += $"\n\nYou have destroyed {_currentNpc.Name}.";
 
                             if (_currentNpc is Foe)
                             {
@@ -579,12 +601,23 @@ namespace TB_QuestGame.PresentationLayer
                             }
                             _currentLocation.Npcs.Remove(_currentNpc);
                         }
+                        if (battlingNpc.Id == 5004)
+                        {
+
+                            OnPlayerWin();
+
+                        }
+
+
+
                     }
                 }
-                else if (_player.Health <= 0)
+                if (_player.Health <= 0)
                 {
-                    battleInformation += $"You have been killed by {_currentNpc.Name}.";
+                    battleInformation += $"\n\nYou have been killed by {_currentNpc.Name}.";
                     _player.Lives--;
+
+                    _player.Health = 100;
                 }
 
                 CurrentLocationInformation = battleInformation;
@@ -595,6 +628,8 @@ namespace TB_QuestGame.PresentationLayer
                 CurrentLocationInformation = "Don't hit your Friends! \n{-10 XP}";
                 _player.ExpierencePoints -= 10;
             }
+
+
 
         }
 
